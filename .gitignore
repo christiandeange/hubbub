@@ -1,0 +1,12 @@
+# Configuration
+.idea/
+*.iml
+.gradle
+local.properties
+
+# Artifacts
+/build/
+/captures
+
+# Sensitive information
+signing.properties
