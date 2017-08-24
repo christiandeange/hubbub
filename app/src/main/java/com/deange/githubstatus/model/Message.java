@@ -6,19 +6,20 @@ import com.google.gson.Gson;
 import com.google.gson.TypeAdapter;
 import com.google.gson.annotations.SerializedName;
 
-import java.time.LocalDateTime;
+import org.joda.time.LocalDateTime;
+
 
 @AutoValue
 public abstract class Message {
 
     @SerializedName("status")
-    abstract State state();
+    public abstract State state();
 
     @SerializedName("body")
-    abstract String body();
+    public abstract String body();
 
     @SerializedName("created_on")
-    abstract LocalDateTime createdOn();
+    public abstract LocalDateTime createdOn();
 
     public static TypeAdapter<Message> typeAdapter(final Gson gson) {
         return new AutoValue_Message.GsonTypeAdapter(gson);

@@ -7,6 +7,8 @@ import com.nytimes.android.external.store3.base.impl.BarCode;
 import com.nytimes.android.external.store3.base.impl.Store;
 import com.nytimes.android.external.store3.base.impl.StoreBuilder;
 
+import java.util.List;
+
 import javax.inject.Singleton;
 
 import dagger.Module;
@@ -26,8 +28,8 @@ public class StoreModule {
 
     @Provides
     @Singleton
-    public Store<Message, BarCode> providesMessageStore(final GithubStatusApi api) {
-        return StoreBuilder.<Message>barcode()
+    public Store<List<Message>, BarCode> providesMessageStore(final GithubStatusApi api) {
+        return StoreBuilder.<List<Message>>barcode()
                 .fetcher(barcode -> api.messages())
                 .open();
     }

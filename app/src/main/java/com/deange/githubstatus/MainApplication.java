@@ -8,6 +8,8 @@ import com.deange.githubstatus.dagger.BaseAppComponent;
 import com.deange.githubstatus.dagger.DaggerAppComponent;
 import com.deange.githubstatus.dagger.module.AppModule;
 
+import net.danlew.android.joda.JodaTimeAndroid;
+
 
 public class MainApplication
         extends Application {
@@ -27,6 +29,8 @@ public class MainApplication
 
         mAppComponent = buildAppComponent();
         mAppComponent.inject(this);
+
+        JodaTimeAndroid.init(this);
     }
 
     private BaseAppComponent buildAppComponent() {

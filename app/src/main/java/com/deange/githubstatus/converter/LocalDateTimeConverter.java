@@ -13,15 +13,15 @@ import java.io.IOException;
 class LocalDateTimeConverter
         extends TypeAdapter<LocalDateTime> {
 
-    private static final DateTimeFormatter FORMAT = ISODateTimeFormat.localDateOptionalTimeParser();
+    private static final DateTimeFormatter ISO_FORMAT = ISODateTimeFormat.dateTimeParser();
 
     @Override
     public void write(final JsonWriter out, final LocalDateTime value) throws IOException {
-        out.value(value.toString(FORMAT));
+        out.value(value.toDateTime().toString(ISO_FORMAT));
     }
 
     @Override
     public LocalDateTime read(final JsonReader in) throws IOException {
-        return FORMAT.parseLocalDateTime(in.nextString());
+        return ISO_FORMAT.parseDateTime(in.nextString()).toLocalDateTime();
     }
 }
