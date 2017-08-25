@@ -9,15 +9,12 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 
 import butterknife.ButterKnife;
-import io.reactivex.disposables.CompositeDisposable;
-import io.reactivex.disposables.Disposable;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 
 public abstract class BaseActivity
         extends AppCompatActivity {
 
-    private final CompositeDisposable mCompositeDisposable = new CompositeDisposable();
     private final Handler mHandler = new Handler(Looper.getMainLooper());
 
     @Override
@@ -36,27 +33,16 @@ public abstract class BaseActivity
         super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
     }
 
-    @Override
-    protected void onDestroy() {
-        disposeAll();
-
-        super.onDestroy();
-    }
-
-    protected void trackDisposable(final Disposable disposable) {
-        mCompositeDisposable.add(disposable);
-    }
-
-    protected void disposeAll() {
-        mCompositeDisposable.dispose();
-    }
-
     protected void post(final Runnable runnable) {
         mHandler.post(runnable);
     }
 
     protected void postDelayed(final Runnable runnable, final long delayMillis) {
         mHandler.postDelayed(runnable, delayMillis);
+    }
+
+    protected void removeCallbacks(final Runnable runnable) {
+        mHandler.removeCallbacks(runnable);
     }
 
     @LayoutRes

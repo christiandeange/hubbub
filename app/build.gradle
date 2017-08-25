@@ -27,6 +27,7 @@ android {
 
 def supportLib = '26.0.1'
 def butterknife = '8.6.0'
+def rxlifecycle = '2.1.0'
 def retrofit = '2.2.0'
 def dagger = '2.11-rc2'
 def store = '3.0.0-beta'
@@ -67,11 +68,14 @@ dependencies {
     implementation 'net.danlew:android.joda:2.9.9'
     implementation 'org.jsoup:jsoup:1.10.2'
 
-    implementation "com.nytimes.android:store3:$store"
-    implementation "com.nytimes.android:middleware3:$store"
-
+    implementation "com.trello.rxlifecycle2:rxlifecycle:$rxlifecycle"
+    implementation "com.trello.rxlifecycle2:rxlifecycle-android:$rxlifecycle"
+    implementation "com.trello.rxlifecycle2:rxlifecycle-components:$rxlifecycle"
     implementation 'io.reactivex.rxjava2:rxandroid:2.0.1'
     implementation 'io.reactivex.rxjava2:rxjava:2.1.2'
+
+    implementation "com.nytimes.android:store3:$store"
+    implementation "com.nytimes.android:middleware3:$store"
 
     implementation 'uk.co.chrisjenx:calligraphy:2.2.0'
 }

@@ -2,6 +2,7 @@ package com.deange.githubstatus.model;
 
 
 import com.google.auto.value.AutoValue;
+import com.google.auto.value.extension.memoized.Memoized;
 import com.google.gson.Gson;
 import com.google.gson.TypeAdapter;
 import com.google.gson.annotations.SerializedName;
@@ -20,6 +21,11 @@ public abstract class Message {
 
     @SerializedName("created_on")
     public abstract LocalDateTime createdOn();
+
+    @Memoized
+    public long id() {
+        return createdOn().toDate().getTime();
+    }
 
     public static TypeAdapter<Message> typeAdapter(final Gson gson) {
         return new AutoValue_Message.GsonTypeAdapter(gson);
