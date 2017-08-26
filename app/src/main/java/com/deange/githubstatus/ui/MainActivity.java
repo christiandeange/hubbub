@@ -1,6 +1,7 @@
 package com.deange.githubstatus.ui;
 
 import android.os.Bundle;
+import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -15,6 +16,7 @@ import com.deange.githubstatus.R;
 import com.deange.githubstatus.model.CurrentStatus;
 import com.deange.githubstatus.model.Message;
 import com.deange.githubstatus.model.Response;
+import com.deange.githubstatus.model.State;
 import com.nytimes.android.external.store3.base.impl.BarCode;
 import com.nytimes.android.external.store3.base.impl.Store;
 
@@ -22,6 +24,7 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import butterknife.BindDimen;
 import butterknife.BindView;
 import butterknife.OnClick;
 import io.reactivex.Single;
@@ -36,11 +39,14 @@ public class MainActivity
     @Inject Store<CurrentStatus, BarCode> mStatusStore;
     @Inject Store<List<Message>, BarCode> mMessageStore;
 
+    @BindView(R.id.app_bar) AppBarLayout mAppBarLayout;
     @BindView(R.id.toolbar_layout) CollapsingToolbarLayout mToolbarLayout;
     @BindView(R.id.toolbar) Toolbar mToolbar;
     @BindView(R.id.fab) FloatingActionButton mFab;
     @BindView(R.id.swipe_layout) SwipeRefreshLayout mSwipeLayout;
     @BindView(R.id.recycler_view) RecyclerView mRecyclerView;
+
+    @BindDimen(R.dimen.app_bar_elevation) float mElevation;
 
     private MessagesAdapter mAdapter;
 
@@ -55,6 +61,7 @@ public class MainActivity
 
         setSupportActionBar(mToolbar);
 
+        mAppBarLayout.addOnOffsetChangedListener((layout, off) -> layout.setElevation(mElevation));
         mSwipeLayout.setOnRefreshListener(this::onRefreshPulled);
 
         mAdapter = new MessagesAdapter(this);
@@ -124,7 +131,15 @@ public class MainActivity
     }
 
     void onCurrentStatusReceived(final Response response) {
-        mToolbarLayout.setTitle(getString(response.status().state().getStringResId()));
+        final State state = response.status().state();
+        final int color = getResources().getColor(state.getColorResId());
+
+        mToolbarLayout.setTitle(getString(state.getStringResId()));
+        mToolbarLayout.setBackgroundColor(color);
+        mToolbarLayout.setContentScrimColor(color);
+        mToolbarLayout.setStatusBarScrimColor(color);
+
+        getWindow().setStatusBarColor(color);
     }
 
     void onCurrentStatusFailed(final Throwable error) {

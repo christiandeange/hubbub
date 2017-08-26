@@ -1,6 +1,8 @@
 package com.deange.githubstatus.ui;
 
 import android.content.Context;
+import android.content.res.Resources;
+import android.graphics.Color;
 import android.support.v7.util.DiffUtil;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -25,11 +27,13 @@ public class MessagesAdapter
         extends RecyclerView.Adapter<MessagesAdapter.VH> {
 
     private final Context mContext;
+    private final Resources mResources;
     private final LayoutInflater mInflater;
     @NonNull private List<Message> mMessages = Collections.emptyList();
 
     public MessagesAdapter(final Context context) {
         mContext = context;
+        mResources = context.getResources();
         mInflater = LayoutInflater.from(context);
     }
 
@@ -41,9 +45,12 @@ public class MessagesAdapter
     @Override
     public void onBindViewHolder(final VH holder, final int position) {
         final Message message = mMessages.get(position);
+        final int statusColor = mResources.getColor(message.state().getColorResId());
 
+        holder.itemView.setBackgroundColor(statusColor);
+        holder.mDot.getBackground().setTint(Color.WHITE);
         holder.mBody.setText(message.body());
-        holder.mDate.setText(message.createdOn().toString());
+        holder.mDate.setText(Formatter.formatLocalDateTime(message.createdOn()));
     }
 
     @Override
@@ -67,11 +74,16 @@ public class MessagesAdapter
         final List<Message> oldMessages = mMessages;
         mMessages = messages;
 
-        final DiffUtil.Callback callback = new MessageDiffer(oldMessages, mMessages);
+        final DiffUtil.Callback callback = new SimpleDiffCallback<>(
+                oldMessages,
+                mMessages,
+                (m1, m2) -> m1.id() == m2.id());
+
         DiffUtil.calculateDiff(callback, false).dispatchUpdatesTo(this);
     }
 
     static class VH extends RecyclerView.ViewHolder {
+        @BindView(R.id.timeline_dot) View mDot;
         @BindView(R.id.message_body) TextView mBody;
         @BindView(R.id.message_date) TextView mDate;
 
