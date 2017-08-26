@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- Normal styles -->
+    <eat-comment />
+    <string name="font_thin">fonts/SF-Pro-Display-Thin.otf</string>
+    <string name="font_light">fonts/SF-Pro-Display-Light.otf</string>
+    <string name="font_regular">fonts/SF-Pro-Display-Regular.otf</string>
+    <string name="font_bold">fonts/SF-Pro-Display-Bold.otf</string>
+
+    <!-- Italic styles -->
+    <eat-comment />
+    <string name="font_thin_italic">fonts/SF-Pro-Display-ThinItalic.otf</string>
+    <string name="font_light_italic">fonts/SF-Pro-Display-LightItalic.otf</string>
+    <string name="font_regular_italic">fonts/SF-Pro-Display-RegularItalic.otf</string>
+    <string name="font_bold_italic">fonts/SF-Pro-Display-BoldItalic.otf</string>
+
+</resources>

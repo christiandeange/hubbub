@@ -62,6 +62,7 @@ public class MainActivity
         setSupportActionBar(mToolbar);
 
         mAppBarLayout.addOnOffsetChangedListener((layout, off) -> layout.setElevation(mElevation));
+        FontUtils.apply(mToolbarLayout, FontUtils.THIN);
         mSwipeLayout.setOnRefreshListener(this::onRefreshPulled);
 
         mAdapter = new MessagesAdapter(this);

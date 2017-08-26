@@ -7,6 +7,7 @@ import android.util.Log;
 import com.deange.githubstatus.dagger.BaseAppComponent;
 import com.deange.githubstatus.dagger.DaggerAppComponent;
 import com.deange.githubstatus.dagger.module.AppModule;
+import com.deange.githubstatus.ui.FontUtils;
 
 import net.danlew.android.joda.JodaTimeAndroid;
 
@@ -29,6 +30,8 @@ public class MainApplication
 
         mAppComponent = buildAppComponent();
         mAppComponent.inject(this);
+
+        FontUtils.init(this);
 
         JodaTimeAndroid.init(this);
     }

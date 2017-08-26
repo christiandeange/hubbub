@@ -22,7 +22,7 @@
             android:fitsSystemWindows="true"
             app:contentScrim="?colorPrimary"
             app:expandedTitleGravity="center"
-            app:expandedTitleTextAppearance="@style/TextAppearance.AppCompat.Display3"
+            app:expandedTitleTextAppearance="@style/HeaderTextAppearance"
             app:layout_scrollFlags="scroll|exitUntilCollapsed"
             app:toolbarId="@+id/toolbar">
 

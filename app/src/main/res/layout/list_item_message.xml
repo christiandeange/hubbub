@@ -21,7 +21,7 @@
             android:layout_height="12dp"
             android:layout_gravity="center"
             android:background="@drawable/circle_black"
-            android:backgroundTint="?colorAccent" />
+            android:backgroundTint="@android:color/white" />
 
     </FrameLayout>
 

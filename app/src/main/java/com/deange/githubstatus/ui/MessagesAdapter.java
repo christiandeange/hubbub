@@ -48,7 +48,6 @@ public class MessagesAdapter
         final int statusColor = mResources.getColor(message.state().getColorResId());
 
         holder.itemView.setBackgroundColor(statusColor);
-        holder.mDot.getBackground().setTint(Color.WHITE);
         holder.mBody.setText(message.body());
         holder.mDate.setText(Formatter.formatLocalDateTime(message.createdOn()));
     }
