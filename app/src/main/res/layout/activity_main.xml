@@ -43,8 +43,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/fab_margin"
+        android:contentDescription="@string/action_settings"
         app:layout_anchor="@id/app_bar"
         app:layout_anchorGravity="bottom|end"
-        app:srcCompat="@drawable/ic_refresh" />
+        app:srcCompat="@drawable/ic_settings" />
 
 </android.support.design.widget.CoordinatorLayout>

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <declare-styleable name="PushNotificationRow">
+        <attr name="notificationColor" format="color" />
+        <attr name="notificationDotSize" format="dimension" />
+        <attr name="notificationTitle" format="string" />
+        <attr name="notificationDescription" format="string" />
+    </declare-styleable>
+
+</resources>

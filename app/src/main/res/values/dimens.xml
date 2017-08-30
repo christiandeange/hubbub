@@ -2,4 +2,5 @@
     <dimen name="app_bar_height">180dp</dimen>
     <dimen name="app_bar_elevation">4dp</dimen>
     <dimen name="fab_margin">16dp</dimen>
+    <dimen name="push_notification_dot_margin">8dp</dimen>
 </resources>

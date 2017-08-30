@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/push_notification_toggles_parent"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <com.deange.githubstatus.ui.PushNotificationRow
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:notificationColor="@color/state_major"
+        app:notificationDescription="@string/notification_major_description"
+        app:notificationDotSize="24dp"
+        app:notificationTitle="@string/notification_major_title" />
+
+    <com.deange.githubstatus.ui.PushNotificationRow
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:notificationColor="@color/state_minor"
+        app:notificationDescription="@string/notification_minor_description"
+        app:notificationDotSize="16dp"
+        app:notificationTitle="@string/notification_minor_title" />
+
+    <com.deange.githubstatus.ui.PushNotificationRow
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:notificationColor="@color/state_none"
+        app:notificationDescription="@string/notification_none_description"
+        app:notificationDotSize="8dp"
+        app:notificationTitle="@string/notification_none_title" />
+
+</LinearLayout>

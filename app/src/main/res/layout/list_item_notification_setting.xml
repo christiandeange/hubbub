@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <FrameLayout
+        android:layout_width="?listPreferredItemHeight"
+        android:layout_height="?listPreferredItemHeight">
+
+        <View
+            android:id="@+id/list_item_setting_dot_outline"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_gravity="center"
+            android:background="@drawable/circle_black"
+            android:backgroundTint="@android:color/white" />
+
+        <View
+            android:id="@+id/list_item_setting_dot"
+            android:layout_width="16dp"
+            android:layout_height="16dp"
+            android:layout_gravity="center"
+            android:background="@drawable/circle_black" />
+
+    </FrameLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:orientation="vertical">
+
+        <CheckedTextView
+            android:id="@+id/list_item_setting_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+            android:textColor="@drawable/selector_notification_toggle_text" />
+
+        <CheckedTextView
+            android:id="@+id/list_item_setting_description"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="@style/TextAppearance.AppCompat.Caption"
+            android:textColor="@drawable/selector_notification_toggle_text" />
+
+    </LinearLayout>
+
+</merge>
