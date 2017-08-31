@@ -1,4 +1,4 @@
-package com.deange.githubstatus.ui;
+package com.deange.githubstatus.util;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;

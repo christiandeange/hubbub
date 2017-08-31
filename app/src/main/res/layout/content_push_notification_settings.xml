@@ -12,7 +12,8 @@
         app:notificationColor="@color/state_major"
         app:notificationDescription="@string/notification_major_description"
         app:notificationDotSize="24dp"
-        app:notificationTitle="@string/notification_major_title" />
+        app:notificationTitle="@string/notification_major_title"
+        app:notificationTopic="major"/>
 
     <com.deange.githubstatus.ui.PushNotificationRow
         android:layout_width="match_parent"
@@ -20,7 +21,8 @@
         app:notificationColor="@color/state_minor"
         app:notificationDescription="@string/notification_minor_description"
         app:notificationDotSize="16dp"
-        app:notificationTitle="@string/notification_minor_title" />
+        app:notificationTitle="@string/notification_minor_title"
+        app:notificationTopic="minor"/>
 
     <com.deange.githubstatus.ui.PushNotificationRow
         android:layout_width="match_parent"

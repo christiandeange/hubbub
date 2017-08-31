@@ -1,4 +1,4 @@
-package com.deange.githubstatus.ui;
+package com.deange.githubstatus.util;
 
 import android.content.Context;
 import android.content.res.AssetManager;
@@ -76,9 +76,8 @@ public final class FontUtils {
         }
 
         if (view instanceof ViewGroup) {
-            final ViewGroup parent = ((ViewGroup) view);
-            for (int i = 0; i < parent.getChildCount(); ++i) {
-                apply(parent.getChildAt(i), typeface);
+            for (final View child : ViewGroupIterable.on((ViewGroup) view)) {
+                apply(child, typeface);
             }
         }
     }

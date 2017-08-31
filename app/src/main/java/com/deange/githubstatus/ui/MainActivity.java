@@ -15,6 +15,7 @@ import com.deange.githubstatus.model.CurrentStatus;
 import com.deange.githubstatus.model.Message;
 import com.deange.githubstatus.model.Response;
 import com.deange.githubstatus.model.State;
+import com.deange.githubstatus.util.FontUtils;
 import com.nytimes.android.external.store3.base.impl.BarCode;
 import com.nytimes.android.external.store3.base.impl.Store;
 

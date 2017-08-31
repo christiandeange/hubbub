@@ -6,6 +6,7 @@
         <attr name="notificationDotSize" format="dimension" />
         <attr name="notificationTitle" format="string" />
         <attr name="notificationDescription" format="string" />
+        <attr name="notificationTopic" format="string" />
     </declare-styleable>
 
 </resources>

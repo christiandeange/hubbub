@@ -1,4 +1,4 @@
-package com.deange.githubstatus.ui;
+package com.deange.githubstatus.util;
 
 import org.joda.time.LocalDate;
 import org.joda.time.LocalDateTime;

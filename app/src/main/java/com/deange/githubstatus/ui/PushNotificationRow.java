@@ -23,6 +23,8 @@ import butterknife.BindDimen;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+import static com.deange.githubstatus.util.ViewUtils.getDrawable;
+
 
 public class PushNotificationRow
         extends LinearLayout
@@ -40,6 +42,7 @@ public class PushNotificationRow
 
     private final ColorDrawable mColorDrawable;
     private boolean mIsChecked;
+    private String mTopic;
 
     public PushNotificationRow(@NonNull final Context context) {
         this(context, null);
@@ -77,7 +80,7 @@ public class PushNotificationRow
         mColorDrawable = new ColorDrawable(Color.TRANSPARENT);
         final StateListDrawable states = new StateListDrawable();
         states.addState(new int[]{android.R.attr.state_checked}, mColorDrawable);
-        states.addState(new int[]{}, ViewUtils.getDrawable(R.attr.selectableItemBackground, context));
+        states.addState(new int[]{}, getDrawable(R.attr.selectableItemBackground, context));
         setBackground(states);
 
         final TypedArray a = context.obtainStyledAttributes(
@@ -91,6 +94,7 @@ public class PushNotificationRow
 
             setTitle(a.getString(R.styleable.PushNotificationRow_notificationTitle));
             setDescription(a.getString(R.styleable.PushNotificationRow_notificationDescription));
+            setTopic(a.getString(R.styleable.PushNotificationRow_notificationTopic));
             a.recycle();
         }
     }
@@ -120,6 +124,16 @@ public class PushNotificationRow
 
     public void setDescription(final CharSequence description) {
         mDescription.setText(description);
+    }
+
+    private void setTopic(String topic) {
+        if (topic == null) topic = "";
+        mTopic = topic;
+    }
+
+    @NonNull
+    public String getTopic() {
+        return mTopic;
     }
 
     @Override

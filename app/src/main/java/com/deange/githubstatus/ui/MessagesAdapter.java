@@ -2,7 +2,6 @@ package com.deange.githubstatus.ui;
 
 import android.content.Context;
 import android.content.res.Resources;
-import android.graphics.Color;
 import android.support.v7.util.DiffUtil;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -13,6 +12,8 @@ import android.widget.TextView;
 import com.deange.githubstatus.R;
 import com.deange.githubstatus.model.Message;
 import com.deange.githubstatus.model.Response;
+import com.deange.githubstatus.util.Formatter;
+import com.deange.githubstatus.util.SimpleDiffCallback;
 
 import java.util.Collections;
 import java.util.List;

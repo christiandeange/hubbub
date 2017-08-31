@@ -1,4 +1,4 @@
-package com.deange.githubstatus.ui;
+package com.deange.githubstatus.util;
 
 import android.support.v7.util.DiffUtil;
 
