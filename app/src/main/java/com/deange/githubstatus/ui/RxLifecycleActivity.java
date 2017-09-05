@@ -3,6 +3,7 @@ package com.deange.githubstatus.ui;
 import android.os.Bundle;
 import android.support.annotation.CallSuper;
 import android.support.annotation.Nullable;
+import android.support.v7.app.AppCompatActivity;
 
 import com.trello.rxlifecycle2.LifecycleTransformer;
 import com.trello.rxlifecycle2.android.ActivityEvent;
@@ -13,7 +14,7 @@ import io.reactivex.subjects.Subject;
 
 
 public abstract class RxLifecycleActivity
-        extends BaseActivity {
+        extends AppCompatActivity {
 
     private final Subject<ActivityEvent> mLifecycle = PublishSubject.create();
 

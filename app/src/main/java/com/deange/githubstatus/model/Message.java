@@ -1,6 +1,8 @@
 package com.deange.githubstatus.model;
 
 
+import android.support.annotation.Nullable;
+
 import com.google.auto.value.AutoValue;
 import com.google.auto.value.extension.memoized.Memoized;
 import com.google.gson.Gson;
@@ -16,6 +18,7 @@ public abstract class Message {
     @SerializedName("status")
     public abstract State state();
 
+    @Nullable
     @SerializedName("body")
     public abstract String body();
 

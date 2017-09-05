@@ -1,5 +1,7 @@
 package com.deange.githubstatus.ui;
 
+import android.app.ActivityManager;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
@@ -31,7 +33,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 
 public class MainActivity
-        extends RxLifecycleActivity {
+        extends BaseActivity {
 
     private static final BarCode BARCODE = BarCode.empty();
 
@@ -123,6 +125,12 @@ public class MainActivity
         mToolbarLayout.setStatusBarScrimColor(color);
 
         getWindow().setStatusBarColor(color);
+
+        setTaskDescription(new ActivityManager.TaskDescription(
+                getString(R.string.app_name),
+                BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher),
+                color)
+        );
     }
 
     void onCurrentStatusFailed(final Throwable error) {

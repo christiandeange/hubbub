@@ -6,14 +6,16 @@ import android.os.Handler;
 import android.os.Looper;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
+
+import com.deange.githubstatus.net.TopicController;
+import com.google.android.gms.common.GoogleApiAvailability;
 
 import butterknife.ButterKnife;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 
 public abstract class BaseActivity
-        extends AppCompatActivity {
+        extends RxLifecycleActivity {
 
     private final Handler mHandler = new Handler(Looper.getMainLooper());
 
@@ -25,6 +27,19 @@ public abstract class BaseActivity
         if (layoutId != 0) {
             setContentView(layoutId);
             ButterKnife.bind(this);
+        }
+
+        TopicController.getInstance()
+                       .getTopic()
+                       .compose(bindToLifecycle())
+                       .subscribe(this::onTopicChanged);
+    }
+
+    private void onTopicChanged(final String newTopic) {
+        if (!newTopic.isEmpty()) {
+            // If the user is attempting to subscribe to a push notification channel,
+            // they'll need to have a isInvalid Google Play Services version
+            GoogleApiAvailability.getInstance().makeGooglePlayServicesAvailable(this);
         }
     }
 

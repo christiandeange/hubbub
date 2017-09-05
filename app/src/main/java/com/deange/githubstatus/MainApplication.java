@@ -7,7 +7,7 @@ import android.util.Log;
 import com.deange.githubstatus.dagger.BaseAppComponent;
 import com.deange.githubstatus.dagger.DaggerAppComponent;
 import com.deange.githubstatus.dagger.module.AppModule;
-import com.deange.githubstatus.net.PushNotificationController;
+import com.deange.githubstatus.net.TopicController;
 import com.deange.githubstatus.util.FontUtils;
 
 import net.danlew.android.joda.JodaTimeAndroid;
@@ -36,7 +36,7 @@ public class MainApplication
 
         JodaTimeAndroid.init(this);
 
-        PushNotificationController.createInstance(this);
+        TopicController.createInstance(this);
     }
 
     private BaseAppComponent buildAppComponent() {
