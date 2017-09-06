@@ -2,9 +2,16 @@
     <string name="app_name">Hubbub</string>
     <string name="action_settings">Settings</string>
 
-    <string name="state_good">GOOD</string>
-    <string name="state_minor">MINOR</string>
-    <string name="state_major">MAJOR</string>
+    <string name="state_good">Good</string>
+    <string name="state_minor">Minor</string>
+    <string name="state_major">Major</string>
+
+    <string name="state_good_description">Everything operating normally.</string>
+    <string name="state_minor_description">There is an issue affecting some GitHub services.</string>
+    <string name="state_major_description">There is a major GitHub service outage.</string>
+
+    <string name="notification_channel_name">GitHub Status</string>
+    <string name="notification_channel_description">Status updates for GitHub service interruptions.</string>
 
     <string name="notification_major_title">Major Outages</string>
     <string name="notification_major_description">Only notify me for widespread GitHub outages.</string>

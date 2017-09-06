@@ -4,10 +4,11 @@ import android.app.Application;
 import android.content.Context;
 import android.util.Log;
 
+import com.deange.githubstatus.controller.NotificationController;
 import com.deange.githubstatus.dagger.BaseAppComponent;
 import com.deange.githubstatus.dagger.DaggerAppComponent;
 import com.deange.githubstatus.dagger.module.AppModule;
-import com.deange.githubstatus.net.TopicController;
+import com.deange.githubstatus.controller.TopicController;
 import com.deange.githubstatus.util.FontUtils;
 
 import net.danlew.android.joda.JodaTimeAndroid;
@@ -37,6 +38,8 @@ public class MainApplication
         JodaTimeAndroid.init(this);
 
         TopicController.createInstance(this);
+
+        NotificationController.createInstance(this);
     }
 
     private BaseAppComponent buildAppComponent() {

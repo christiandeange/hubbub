@@ -1,4 +1,4 @@
-package com.deange.githubstatus.net;
+package com.deange.githubstatus.controller;
 
 import android.content.Context;
 import android.util.Log;
@@ -36,7 +36,7 @@ public class TopicController {
         return sInstance;
     }
 
-    public TopicController(final Context context) {
+    private TopicController(final Context context) {
         MainApplication.get(context).getAppComponent().inject(this);
 
         mFirebase = FirebaseMessaging.getInstance();

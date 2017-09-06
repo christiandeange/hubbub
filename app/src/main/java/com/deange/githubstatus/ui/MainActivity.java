@@ -119,7 +119,7 @@ public class MainActivity
         final State state = response.status().state();
         final int color = getResources().getColor(state.getColorResId());
 
-        mToolbarLayout.setTitle(getString(state.getStringResId()));
+        mToolbarLayout.setTitle(getString(state.getTitleResId()).toUpperCase());
         mToolbarLayout.setBackgroundColor(color);
         mToolbarLayout.setContentScrimColor(color);
         mToolbarLayout.setStatusBarScrimColor(color);

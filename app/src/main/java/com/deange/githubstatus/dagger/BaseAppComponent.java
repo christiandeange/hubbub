@@ -3,7 +3,7 @@ package com.deange.githubstatus.dagger;
 
 import com.deange.githubstatus.MainApplication;
 import com.deange.githubstatus.net.FirebaseService;
-import com.deange.githubstatus.net.TopicController;
+import com.deange.githubstatus.controller.TopicController;
 import com.deange.githubstatus.ui.MainActivity;
 import com.deange.githubstatus.ui.PushNotificationDialog;
 

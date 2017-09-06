@@ -3,6 +3,7 @@ package com.deange.githubstatus.net;
 import android.util.Log;
 
 import com.deange.githubstatus.MainApplication;
+import com.deange.githubstatus.controller.NotificationController;
 import com.deange.githubstatus.model.Message;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
@@ -29,6 +30,8 @@ public class FirebaseService
         final Message message = mGson.fromJson(json, Message.class);
 
         Log.d(TAG, "Message data = " + message);
+
+        NotificationController.getInstance().showNotification(message);
     }
 
     @Override

@@ -7,7 +7,7 @@ import android.os.Looper;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.Nullable;
 
-import com.deange.githubstatus.net.TopicController;
+import com.deange.githubstatus.controller.TopicController;
 import com.google.android.gms.common.GoogleApiAvailability;
 
 import butterknife.ButterKnife;

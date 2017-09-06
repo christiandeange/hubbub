@@ -1,6 +1,7 @@
 package com.deange.githubstatus.model;
 
 
+import android.content.Context;
 import android.support.annotation.Nullable;
 
 import com.google.auto.value.AutoValue;
@@ -30,8 +31,17 @@ public abstract class Message {
         return createdOn().toDate().getTime();
     }
 
+    public String bodyForNotification(final Context context) {
+        String body = body();
+
+        if (body == null) {
+            return context.getString(state().getDescriptionResId());
+        }
+
+        return body;
+    }
+
     public static TypeAdapter<Message> typeAdapter(final Gson gson) {
         return new AutoValue_Message.GsonTypeAdapter(gson);
     }
-
 }
