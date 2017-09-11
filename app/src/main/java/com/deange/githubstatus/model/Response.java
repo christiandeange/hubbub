@@ -1,6 +1,8 @@
 package com.deange.githubstatus.model;
 
 
+import android.os.Parcelable;
+
 import com.google.auto.value.AutoValue;
 import com.google.gson.Gson;
 import com.google.gson.TypeAdapter;
@@ -9,7 +11,9 @@ import com.google.gson.annotations.SerializedName;
 import java.util.List;
 
 @AutoValue
-public abstract class Response {
+public abstract class Response
+        implements
+        Parcelable {
 
     public static Response create(final CurrentStatus status, final List<Message> messages) {
         return new AutoValue_Response(status, messages);

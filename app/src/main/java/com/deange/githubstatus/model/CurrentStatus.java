@@ -1,5 +1,7 @@
 package com.deange.githubstatus.model;
 
+import android.os.Parcelable;
+
 import com.google.auto.value.AutoValue;
 import com.google.auto.value.extension.memoized.Memoized;
 import com.google.gson.Gson;
@@ -10,7 +12,9 @@ import org.joda.time.LocalDateTime;
 
 
 @AutoValue
-public abstract class CurrentStatus {
+public abstract class CurrentStatus
+        implements
+        Parcelable {
 
     @SerializedName("status")
     public abstract State state();

@@ -2,6 +2,7 @@ package com.deange.githubstatus.model;
 
 
 import android.content.Context;
+import android.os.Parcelable;
 import android.support.annotation.Nullable;
 
 import com.google.auto.value.AutoValue;
@@ -14,7 +15,9 @@ import org.joda.time.LocalDateTime;
 
 
 @AutoValue
-public abstract class Message {
+public abstract class Message
+        implements
+        Parcelable {
 
     @SerializedName("status")
     public abstract State state();

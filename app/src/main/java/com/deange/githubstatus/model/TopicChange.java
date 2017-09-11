@@ -1,11 +1,15 @@
 package com.deange.githubstatus.model;
 
 
+import android.os.Parcelable;
+
 import com.google.auto.value.AutoValue;
 import com.google.gson.annotations.SerializedName;
 
 @AutoValue
-public abstract class TopicChange {
+public abstract class TopicChange
+        implements
+        Parcelable {
 
     @SerializedName("old_topic")
     public abstract String oldTopic();
