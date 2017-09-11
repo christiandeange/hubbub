@@ -9,4 +9,6 @@
         <attr name="notificationTopic" format="string" />
     </declare-styleable>
 
+    <attr name="fontName" format="string" />
+
 </resources>

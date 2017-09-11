@@ -52,7 +52,7 @@ public final class FontUtils {
         CalligraphyConfig.initDefault(
                 new CalligraphyConfig.Builder()
                         .setDefaultFontPath(FONTS.get(DEFAULT))
-                        .setFontAttrId(R.attr.fontPath)
+                        .setFontAttrId(R.attr.fontName)
                         .build());
     }
 

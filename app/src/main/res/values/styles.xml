@@ -5,6 +5,7 @@
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
 
+        <item name="android:dividerHeight">16dp</item>
         <item name="selectableItemBackground">?android:selectableItemBackground</item>
     </style>
 

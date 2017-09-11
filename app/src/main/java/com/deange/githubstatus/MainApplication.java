@@ -42,10 +42,10 @@ public class MainApplication
         NotificationController.createInstance(this);
     }
 
-    private BaseAppComponent buildAppComponent() {
+    BaseAppComponent buildAppComponent() {
         return DaggerAppComponent.builder()
-                .appModule(AppModule.create(this))
-                .build();
+                                 .appModule(AppModule.create(this))
+                                 .build();
     }
 
     public <T extends BaseAppComponent> T getAppComponent() {

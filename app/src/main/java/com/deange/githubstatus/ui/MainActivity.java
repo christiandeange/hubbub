@@ -32,6 +32,8 @@ import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 
+import static com.deange.githubstatus.ui.SpaceDecoration.VERTICAL;
+
 public class MainActivity
         extends BaseActivity {
 
@@ -67,6 +69,7 @@ public class MainActivity
         mSwipeLayout.setOnRefreshListener(this::onRefreshPulled);
 
         mAdapter = new MessagesAdapter(this);
+        mRecyclerView.addItemDecoration(new SpaceDecoration(this, VERTICAL));
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mRecyclerView.setAdapter(mAdapter);
 

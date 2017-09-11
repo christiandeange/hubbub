@@ -1,7 +1,9 @@
 package com.deange.githubstatus.ui;
 
 import android.content.Context;
-import android.content.res.Resources;
+import android.content.res.ColorStateList;
+import android.support.annotation.NonNull;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.util.DiffUtil;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -21,20 +23,17 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import io.reactivex.Single;
-import io.reactivex.annotations.NonNull;
 import io.reactivex.disposables.Disposable;
 
 public class MessagesAdapter
         extends RecyclerView.Adapter<MessagesAdapter.VH> {
 
     private final Context mContext;
-    private final Resources mResources;
     private final LayoutInflater mInflater;
     @NonNull private List<Message> mMessages = Collections.emptyList();
 
     public MessagesAdapter(final Context context) {
         mContext = context;
-        mResources = context.getResources();
         mInflater = LayoutInflater.from(context);
     }
 
@@ -46,9 +45,10 @@ public class MessagesAdapter
     @Override
     public void onBindViewHolder(final VH holder, final int position) {
         final Message message = mMessages.get(position);
-        final int statusColor = mResources.getColor(message.state().getColorResId());
+        final int statusColor = ContextCompat.getColor(mContext, message.state().getColorResId());
 
-        holder.itemView.setBackgroundColor(statusColor);
+        holder.mDot.setBackgroundTintList(ColorStateList.valueOf(statusColor));
+        holder.mTitle.setText(mContext.getString(message.state().getTitleResId()).toLowerCase());
         holder.mBody.setText(message.body());
         holder.mDate.setText(Formatter.formatLocalDateTime(message.createdOn()));
     }
@@ -70,20 +70,20 @@ public class MessagesAdapter
         setMessages(Collections.emptyList());
     }
 
-    void setMessages(final List<Message> messages) {
+    void setMessages(@NonNull final List<Message> messages) {
         final List<Message> oldMessages = mMessages;
         mMessages = messages;
 
         final DiffUtil.Callback callback = new SimpleDiffCallback<>(
-                oldMessages,
-                mMessages,
+                oldMessages, mMessages,
                 (m1, m2) -> m1.id() == m2.id());
 
         DiffUtil.calculateDiff(callback, false).dispatchUpdatesTo(this);
     }
 
     static class VH extends RecyclerView.ViewHolder {
-        @BindView(R.id.timeline_dot) View mDot;
+        @BindView(R.id.message_dot) View mDot;
+        @BindView(R.id.message_title) TextView mTitle;
         @BindView(R.id.message_body) TextView mBody;
         @BindView(R.id.message_date) TextView mDate;
 
