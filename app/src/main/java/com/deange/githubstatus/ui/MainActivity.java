@@ -110,8 +110,8 @@ public class MainActivity
 
     public Single<Response> getResponse() {
         return Single.zip(
-                mStatusStore.get(BARCODE),
-                mMessageStore.get(BARCODE),
+                mStatusStore.fetch(BARCODE),
+                mMessageStore.fetch(BARCODE),
                 Response::create)
                      .subscribeOn(Schedulers.io())
                      .observeOn(AndroidSchedulers.mainThread())

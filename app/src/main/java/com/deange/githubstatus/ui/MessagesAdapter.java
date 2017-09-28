@@ -1,7 +1,6 @@
 package com.deange.githubstatus.ui;
 
 import android.content.Context;
-import android.content.res.ColorStateList;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.util.DiffUtil;
@@ -9,11 +8,13 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.deange.githubstatus.R;
 import com.deange.githubstatus.model.Message;
 import com.deange.githubstatus.model.Response;
+import com.deange.githubstatus.model.State;
 import com.deange.githubstatus.util.Formatter;
 import com.deange.githubstatus.util.SimpleDiffCallback;
 
@@ -45,10 +46,13 @@ public class MessagesAdapter
     @Override
     public void onBindViewHolder(final VH holder, final int position) {
         final Message message = mMessages.get(position);
-        final int statusColor = ContextCompat.getColor(mContext, message.state().getColorResId());
+        final State state = message.state();
+        final int color = ContextCompat.getColor(mContext, state.getColorResId());
 
-        holder.mDot.setBackgroundTintList(ColorStateList.valueOf(statusColor));
-        holder.mTitle.setText(mContext.getString(message.state().getTitleResId()).toLowerCase());
+        ((LinearLayout.LayoutParams) holder.mTitle.getLayoutParams()).weight = state.getWeight();
+
+        holder.mTitle.setBackgroundColor(color);
+        holder.mTitle.setText(mContext.getString(state.getTitleResId()).toLowerCase());
         holder.mBody.setText(message.body());
         holder.mDate.setText(Formatter.formatLocalDateTime(message.createdOn()));
     }
@@ -82,7 +86,6 @@ public class MessagesAdapter
     }
 
     static class VH extends RecyclerView.ViewHolder {
-        @BindView(R.id.message_dot) View mDot;
         @BindView(R.id.message_title) TextView mTitle;
         @BindView(R.id.message_body) TextView mBody;
         @BindView(R.id.message_date) TextView mDate;

@@ -53,4 +53,8 @@ public enum State {
     public int getColorResId() {
         return mColorResId;
     }
+
+    public int getWeight() {
+        return ordinal() + 1;
+    }
 }
