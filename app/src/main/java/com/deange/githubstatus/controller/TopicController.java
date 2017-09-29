@@ -1,46 +1,34 @@
 package com.deange.githubstatus.controller;
 
-import android.content.Context;
 import android.util.Log;
 
-import com.deange.githubstatus.MainApplication;
 import com.deange.githubstatus.model.TopicChange;
-import com.deange.githubstatus.util.RxPreference;
 import com.f2prateek.rx.preferences2.Preference;
+import com.f2prateek.rx.preferences2.RxSharedPreferences;
 import com.google.firebase.messaging.FirebaseMessaging;
 
 import javax.inject.Inject;
+import javax.inject.Singleton;
 
 import io.reactivex.Observable;
 
+@Singleton
 public class TopicController {
 
     private static final String TAG = "TopicController";
-    private static TopicController sInstance;
-
-    @Inject @RxPreference("topic") Preference<String> mTopicPreference;
 
     private final FirebaseMessaging mFirebase;
+    private final Preference<String> mTopicPreference;
 
-    public static synchronized void createInstance(final Context context) {
-        if (sInstance != null) {
-            throw new IllegalStateException("TopicController was already initialized");
-        }
-        sInstance = new TopicController(context);
-    }
-
-    public static synchronized TopicController getInstance() {
-        if (sInstance == null) {
-            throw new IllegalStateException("TopicController has not been initialized");
-        }
-        return sInstance;
-    }
-
-    private TopicController(final Context context) {
-        MainApplication.get(context).getAppComponent().inject(this);
-
+    @Inject
+    public TopicController(final RxSharedPreferences preferences) {
         mFirebase = FirebaseMessaging.getInstance();
+        mTopicPreference = preferences.getString("topic");
         getTopicChanges().subscribe(this::onTopicSubscriptionChanged);
+    }
+
+    public Preference<String> getPreference() {
+        return mTopicPreference;
     }
 
     public Observable<String> getTopic() {
@@ -64,5 +52,4 @@ public class TopicController {
             mFirebase.subscribeToTopic(change.newTopic());
         }
     }
-
 }

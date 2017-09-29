@@ -6,28 +6,24 @@ import android.support.v7.app.AlertDialog;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.deange.githubstatus.MainApplication;
 import com.deange.githubstatus.R;
-import com.deange.githubstatus.util.RxPreference;
 import com.deange.githubstatus.util.ViewGroupIterable;
 import com.f2prateek.rx.preferences2.Preference;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.inject.Inject;
+import static com.deange.githubstatus.MainApplication.getAppComponent;
 
 public class PushNotificationDialog {
 
     private final Context mContext;
-
-    @Inject @RxPreference("topic") Preference<String> mTopicPreference;
-
+    private final Preference<String> mTopicPreference;
     private final List<PushNotificationRow> mToggles = new ArrayList<>();
 
     public PushNotificationDialog(@NonNull final Context context) {
-        MainApplication.get(context).getAppComponent().inject(this);
         mContext = context;
+        mTopicPreference = getAppComponent(context).topicController().getPreference();
     }
 
     public void show() {

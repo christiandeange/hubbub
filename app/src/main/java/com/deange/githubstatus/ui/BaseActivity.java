@@ -7,11 +7,12 @@ import android.os.Looper;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.Nullable;
 
-import com.deange.githubstatus.controller.TopicController;
 import com.google.android.gms.common.GoogleApiAvailability;
 
 import butterknife.ButterKnife;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
+
+import static com.deange.githubstatus.MainApplication.getAppComponent;
 
 
 public abstract class BaseActivity
@@ -29,10 +30,10 @@ public abstract class BaseActivity
             ButterKnife.bind(this);
         }
 
-        TopicController.getInstance()
-                       .getTopic()
-                       .compose(bindToLifecycle())
-                       .subscribe(this::onTopicChanged);
+        getAppComponent(this).topicController()
+                             .getTopic()
+                             .compose(bindToLifecycle())
+                             .subscribe(this::onTopicChanged);
     }
 
     private void onTopicChanged(final String newTopic) {

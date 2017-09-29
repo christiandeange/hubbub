@@ -21,41 +21,45 @@ import com.deange.githubstatus.util.RxBroadcastReceiver;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import javax.inject.Inject;
+import javax.inject.Singleton;
+
 import static android.content.Context.NOTIFICATION_SERVICE;
 import static com.deange.githubstatus.net.FirebaseService.ACTION_MESSAGE_RECEIVED;
 
+@Singleton
 public class NotificationController {
 
     private static final String TAG = "NotificationController";
     private static final int NOTIFICATION_ID = 0x420;
 
-    private static NotificationController sInstance;
-
+    private final Object mLock = new Object();
     private final Context mContext;
     private final NotificationManager mManager;
+    private volatile boolean mRegistered;
 
-    public static synchronized void createInstance(final Context context) {
-        if (sInstance != null) {
-            throw new IllegalStateException("NotificationController was already initialized");
-        }
-        sInstance = new NotificationController(context);
-    }
-
-    public static synchronized NotificationController getInstance() {
-        if (sInstance == null) {
-            throw new IllegalStateException("NotificationController has not been initialized");
-        }
-        return sInstance;
-    }
-
-    private NotificationController(final Context context) {
+    @Inject
+    public NotificationController(final Context context) {
         mContext = context;
         mManager = (NotificationManager) context.getSystemService(NOTIFICATION_SERVICE);
+    }
 
+    public void register() {
+        if (!mRegistered) {
+            synchronized (mLock) {
+                if (!mRegistered) {
+                    doRegister();
+                    mRegistered = true;
+                }
+            }
+        }
+    }
+
+    private void doRegister() {
         ensureNotificationChannels();
 
         // Listen for incoming status message updates
-        RxBroadcastReceiver.create(context, new IntentFilter(ACTION_MESSAGE_RECEIVED))
+        RxBroadcastReceiver.create(mContext, new IntentFilter(ACTION_MESSAGE_RECEIVED))
                            .map(FirebaseService::getMessageFromIntent)
                            .subscribe(this::showNotification);
     }

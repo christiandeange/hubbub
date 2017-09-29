@@ -4,8 +4,6 @@ import android.app.Application;
 import android.content.Context;
 import android.util.Log;
 
-import com.deange.githubstatus.controller.NotificationController;
-import com.deange.githubstatus.controller.TopicController;
 import com.deange.githubstatus.dagger.BaseAppComponent;
 import com.deange.githubstatus.dagger.DaggerAppComponent;
 import com.deange.githubstatus.dagger.module.AppModule;
@@ -34,12 +32,9 @@ public class MainApplication
         mAppComponent.inject(this);
 
         FontUtils.init(this);
-
         JodaTimeAndroid.init(this);
 
-        TopicController.createInstance(this);
-
-        NotificationController.createInstance(this);
+        mAppComponent.notificationController().register();
     }
 
     BaseAppComponent buildAppComponent() {
@@ -48,9 +43,9 @@ public class MainApplication
                                  .build();
     }
 
-    public <T extends BaseAppComponent> T getAppComponent() {
-        // noinspection unchecked
-        return (T) mAppComponent;
+    public static <T extends BaseAppComponent> T getAppComponent(final Context context) {
+        //noinspection unchecked
+        return (T) ((MainApplication) context.getApplicationContext()).mAppComponent;
     }
 
 }

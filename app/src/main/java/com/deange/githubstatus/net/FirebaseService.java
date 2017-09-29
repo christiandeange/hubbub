@@ -3,7 +3,6 @@ package com.deange.githubstatus.net;
 import android.content.Intent;
 import android.util.Log;
 
-import com.deange.githubstatus.MainApplication;
 import com.deange.githubstatus.model.Message;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
@@ -13,6 +12,8 @@ import com.google.gson.JsonObject;
 import java.util.Map;
 
 import javax.inject.Inject;
+
+import static com.deange.githubstatus.MainApplication.getAppComponent;
 
 public class FirebaseService
         extends FirebaseMessagingService {
@@ -27,7 +28,7 @@ public class FirebaseService
     @Override
     public void onCreate() {
         super.onCreate();
-        MainApplication.get(this).getAppComponent().inject(this);
+        getAppComponent(this).inject(this);
     }
 
     @Override

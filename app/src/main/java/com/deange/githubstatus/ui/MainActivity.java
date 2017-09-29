@@ -11,7 +11,6 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 
-import com.deange.githubstatus.MainApplication;
 import com.deange.githubstatus.R;
 import com.deange.githubstatus.model.CurrentStatus;
 import com.deange.githubstatus.model.Message;
@@ -32,6 +31,7 @@ import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 
+import static com.deange.githubstatus.MainApplication.getAppComponent;
 import static com.deange.githubstatus.ui.SpaceDecoration.VERTICAL;
 
 public class MainActivity
@@ -59,8 +59,7 @@ public class MainActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        MainApplication.get(this).getAppComponent().inject(this);
+        getAppComponent(this).inject(this);
 
         setSupportActionBar(mToolbar);
 
