@@ -6,8 +6,9 @@
 
     <color name="ic_launcher_background">@color/colorPrimaryDark</color>
 
+    <color name="state_none">#646464</color>
     <color name="state_good">#339966</color>
     <color name="state_minor">#FF6633</color>
     <color name="state_major">#CC3300</color>
-    <color name="state_none">#646464</color>
+    <color name="state_error">@color/state_none</color>
 </resources>

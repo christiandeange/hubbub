@@ -1,6 +1,5 @@
 package com.deange.githubstatus.model;
 
-
 import android.content.Context;
 import android.os.Parcelable;
 import android.support.annotation.Nullable;
@@ -13,11 +12,16 @@ import com.google.gson.annotations.SerializedName;
 
 import org.joda.time.LocalDateTime;
 
+import static com.deange.githubstatus.model.State.ERROR;
 
 @AutoValue
 public abstract class Message
         implements
         Parcelable {
+
+    public static Message error(final Throwable throwable) {
+        return new AutoValue_Message(ERROR, throwable.getLocalizedMessage(), LocalDateTime.now());
+    }
 
     @SerializedName("status")
     public abstract State state();

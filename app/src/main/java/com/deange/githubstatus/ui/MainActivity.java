@@ -30,9 +30,12 @@ import butterknife.OnClick;
 import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
+import io.reactivex.subjects.PublishSubject;
 
 import static com.deange.githubstatus.MainApplication.getAppComponent;
 import static com.deange.githubstatus.ui.SpaceDecoration.VERTICAL;
+import static io.reactivex.Observable.just;
+import static java.util.concurrent.TimeUnit.MILLISECONDS;
 
 public class MainActivity
         extends BaseActivity {
@@ -52,9 +55,7 @@ public class MainActivity
     @BindDimen(R.dimen.app_bar_elevation) float mElevation;
 
     private MessagesAdapter mAdapter;
-
-    // Multiple references to the same method do NOT share the same instance
-    private final Runnable mRefreshRunnable = this::showRefreshing;
+    private final PublishSubject<Boolean> mRefreshing = PublishSubject.create();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,6 +72,12 @@ public class MainActivity
         mRecyclerView.addItemDecoration(new SpaceDecoration(this, VERTICAL));
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mRecyclerView.setAdapter(mAdapter);
+
+        mRefreshing.distinctUntilChanged()
+                   .debounce(refresh -> just(refresh).delay(refresh ? 500L : 0L, MILLISECONDS))
+                   .compose(bindToLifecycle())
+                   .observeOn(AndroidSchedulers.mainThread())
+                   .subscribe(mSwipeLayout::setRefreshing);
 
         refreshStatus();
     }
@@ -89,22 +96,12 @@ public class MainActivity
         refreshStatus();
     }
 
-    public void showRefreshing() {
-        mSwipeLayout.setRefreshing(true);
-    }
-
-    public void clearRefreshing() {
-        removeCallbacks(mRefreshRunnable);
-        mSwipeLayout.setRefreshing(false);
-    }
-
     public void refreshStatus() {
-        postDelayed(mRefreshRunnable, 500L);
+        mRefreshing.onNext(true);
 
-        final Single<Response> response = getResponse().doFinally(this::clearRefreshing);
-
+        final Single<Response> response = getResponse().doFinally(() -> mRefreshing.onNext(false));
         response.subscribe(this::onCurrentStatusReceived, this::onCurrentStatusFailed);
-        mAdapter.setResponseSingle(response);
+        mAdapter.setResponse(response);
     }
 
     public Single<Response> getResponse() {
@@ -112,6 +109,7 @@ public class MainActivity
                 mStatusStore.fetch(BARCODE),
                 mMessageStore.fetch(BARCODE),
                 Response::create)
+                     .onErrorReturn(Response::error)
                      .subscribeOn(Schedulers.io())
                      .observeOn(AndroidSchedulers.mainThread())
                      .compose(bindToLifecycle());

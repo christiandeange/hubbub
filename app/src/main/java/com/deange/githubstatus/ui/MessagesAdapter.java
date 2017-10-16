@@ -53,7 +53,7 @@ public class MessagesAdapter
 
         holder.mTitle.setBackgroundColor(color);
         holder.mTitle.setText(mContext.getString(state.getTitleResId()).toLowerCase());
-        holder.mBody.setText(message.body());
+        holder.mBody.setText(message.bodyForNotification(mContext));
         holder.mDate.setText(Formatter.formatLocalDateTime(message.createdOn()));
     }
 
@@ -62,7 +62,7 @@ public class MessagesAdapter
         return mMessages.size();
     }
 
-    public Disposable setResponseSingle(final Single<Response> response) {
+    public Disposable setResponse(final Single<Response> response) {
         return response.subscribe(this::onResponseReceived, this::onResponseFailed);
     }
 

@@ -24,7 +24,13 @@ public enum State {
     MAJOR(
             R.string.state_major,
             R.string.state_major_description,
-            R.color.state_major);
+            R.color.state_major),
+
+    @SerializedName("error")
+    ERROR(
+            R.string.state_error,
+            R.string.state_error_description,
+            R.color.state_error),;
 
     @StringRes private final int mTitleResId;
     @StringRes private final int mDescriptionResId;
@@ -55,6 +61,6 @@ public enum State {
     }
 
     public int getWeight() {
-        return ordinal() + 1;
+        return (this == ERROR) ? 2 : ordinal() + 1;
     }
 }
