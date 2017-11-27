@@ -11,6 +11,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 
+import com.deange.githubstatus.BuildConfig;
 import com.deange.githubstatus.R;
 import com.deange.githubstatus.model.CurrentStatus;
 import com.deange.githubstatus.model.Message;
@@ -32,7 +33,9 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 import io.reactivex.subjects.PublishSubject;
 
-import static com.deange.githubstatus.MainApplication.getAppComponent;
+import static android.view.View.GONE;
+import static android.view.View.VISIBLE;
+import static com.deange.githubstatus.MainApplication.component;
 import static com.deange.githubstatus.ui.SpaceDecoration.VERTICAL;
 import static io.reactivex.Observable.just;
 import static java.util.concurrent.TimeUnit.MILLISECONDS;
@@ -49,6 +52,7 @@ public class MainActivity
     @BindView(R.id.toolbar_layout) CollapsingToolbarLayout mToolbarLayout;
     @BindView(R.id.toolbar) Toolbar mToolbar;
     @BindView(R.id.fab) FloatingActionButton mFab;
+    @BindView(R.id.fab_dev_settings) FloatingActionButton mFabDev;
     @BindView(R.id.swipe_layout) SwipeRefreshLayout mSwipeLayout;
     @BindView(R.id.recycler_view) RecyclerView mRecyclerView;
 
@@ -60,7 +64,7 @@ public class MainActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getAppComponent(this).inject(this);
+        component(this).inject(this);
 
         setSupportActionBar(mToolbar);
 
@@ -73,10 +77,10 @@ public class MainActivity
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mRecyclerView.setAdapter(mAdapter);
 
+        mFabDev.setVisibility(BuildConfig.DEBUG ? VISIBLE : GONE);
+
         mRefreshing.distinctUntilChanged()
                    .debounce(refresh -> just(refresh).delay(refresh ? 500L : 0L, MILLISECONDS))
-                   .compose(bindToLifecycle())
-                   .observeOn(AndroidSchedulers.mainThread())
                    .subscribe(mSwipeLayout::setRefreshing);
 
         refreshStatus();
@@ -90,6 +94,11 @@ public class MainActivity
     @OnClick(R.id.fab)
     public void onFabClicked() {
         new PushNotificationDialog(this).show();
+    }
+
+    @OnClick(R.id.fab_dev_settings)
+    public void onDevFabClicked() {
+        new DevSettingsDialog(this).show();
     }
 
     public void onRefreshPulled() {

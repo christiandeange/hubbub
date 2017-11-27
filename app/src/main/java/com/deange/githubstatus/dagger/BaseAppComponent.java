@@ -5,6 +5,7 @@ import com.deange.githubstatus.MainApplication;
 import com.deange.githubstatus.controller.NotificationController;
 import com.deange.githubstatus.controller.TopicController;
 import com.deange.githubstatus.net.FirebaseService;
+import com.deange.githubstatus.ui.DevSettingsDialog;
 import com.deange.githubstatus.ui.MainActivity;
 
 public interface BaseAppComponent {
@@ -17,4 +18,5 @@ public interface BaseAppComponent {
     void inject(final MainApplication target);
     void inject(final MainActivity target);
     void inject(final FirebaseService target);
+    void inject(final DevSettingsDialog target);
 }

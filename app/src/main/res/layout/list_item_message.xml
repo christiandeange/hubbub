@@ -9,8 +9,6 @@
         android:id="@+id/message_root"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="4dp"
-        android:layout_marginTop="4dp"
         android:orientation="horizontal"
         android:weightSum="4">
 
@@ -40,6 +38,7 @@
         android:layout_marginBottom="4dp"
         android:layout_marginEnd="16dp"
         android:layout_marginStart="16dp"
+        android:layout_marginTop="?android:dividerHeight"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
         tools:text="@sample/tools:lorem" />
 

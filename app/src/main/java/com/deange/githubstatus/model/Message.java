@@ -19,6 +19,10 @@ public abstract class Message
         implements
         Parcelable {
 
+    public static Message create(final State state, final String body, final LocalDateTime time) {
+        return new AutoValue_Message(state, body, time);
+    }
+
     public static Message error(final Throwable throwable) {
         return new AutoValue_Message(ERROR, throwable.getLocalizedMessage(), LocalDateTime.now());
     }

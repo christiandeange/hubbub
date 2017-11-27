@@ -13,7 +13,7 @@ import com.f2prateek.rx.preferences2.Preference;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.deange.githubstatus.MainApplication.getAppComponent;
+import static com.deange.githubstatus.MainApplication.component;
 
 public class PushNotificationDialog {
 
@@ -23,7 +23,7 @@ public class PushNotificationDialog {
 
     public PushNotificationDialog(@NonNull final Context context) {
         mContext = context;
-        mTopicPreference = getAppComponent(context).topicController().getPreference();
+        mTopicPreference = component(context).topicController().getPreference();
     }
 
     public void show() {

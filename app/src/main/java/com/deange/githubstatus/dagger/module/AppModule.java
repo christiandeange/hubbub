@@ -3,6 +3,9 @@ package com.deange.githubstatus.dagger.module;
 import android.app.Application;
 import android.content.Context;
 
+import com.deange.githubstatus.dagger.MockMode;
+import com.f2prateek.rx.preferences2.RxSharedPreferences;
+
 import dagger.Module;
 import dagger.Provides;
 
@@ -24,5 +27,4 @@ public class AppModule {
     public Context providesApplicationContext() {
         return mApplication.getApplicationContext();
     }
-
 }

@@ -43,7 +43,7 @@ public class MainApplication
                                  .build();
     }
 
-    public static <T extends BaseAppComponent> T getAppComponent(final Context context) {
+    public static <T extends BaseAppComponent> T component(final Context context) {
         //noinspection unchecked
         return (T) ((MainApplication) context.getApplicationContext()).mAppComponent;
     }

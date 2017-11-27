@@ -13,7 +13,7 @@ import java.util.Map;
 
 import javax.inject.Inject;
 
-import static com.deange.githubstatus.MainApplication.getAppComponent;
+import static com.deange.githubstatus.MainApplication.component;
 
 public class FirebaseService
         extends FirebaseMessagingService {
@@ -28,7 +28,7 @@ public class FirebaseService
     @Override
     public void onCreate() {
         super.onCreate();
-        getAppComponent(this).inject(this);
+        component(this).inject(this);
     }
 
     @Override

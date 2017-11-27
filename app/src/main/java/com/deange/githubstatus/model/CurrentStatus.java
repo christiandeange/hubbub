@@ -16,6 +16,10 @@ public abstract class CurrentStatus
         implements
         Parcelable {
 
+    public static CurrentStatus create(final State state, final LocalDateTime time) {
+        return new AutoValue_CurrentStatus(state, time);
+    }
+
     public static CurrentStatus error() {
         return new AutoValue_CurrentStatus(State.ERROR, LocalDateTime.now());
     }

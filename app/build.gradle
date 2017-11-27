@@ -67,6 +67,7 @@ dependencies {
 
     implementation 'com.f2prateek.rx.preferences2:rx-preferences:2.0.0-RC3'
 
+    implementation 'com.jakewharton:process-phoenix:2.0.0'
     implementation "com.jakewharton:butterknife:$butterknife"
     annotationProcessor "com.jakewharton:butterknife-compiler:$butterknife"
 

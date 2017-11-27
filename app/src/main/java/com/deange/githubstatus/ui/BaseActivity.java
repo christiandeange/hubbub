@@ -12,7 +12,7 @@ import com.google.android.gms.common.GoogleApiAvailability;
 import butterknife.ButterKnife;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
-import static com.deange.githubstatus.MainApplication.getAppComponent;
+import static com.deange.githubstatus.MainApplication.component;
 
 
 public abstract class BaseActivity
@@ -30,10 +30,10 @@ public abstract class BaseActivity
             ButterKnife.bind(this);
         }
 
-        getAppComponent(this).topicController()
-                             .getTopic()
-                             .compose(bindToLifecycle())
-                             .subscribe(this::onTopicChanged);
+        component(this).topicController()
+                       .getTopic()
+                       .compose(bindToLifecycle())
+                       .subscribe(this::onTopicChanged);
     }
 
     private void onTopicChanged(final String newTopic) {
