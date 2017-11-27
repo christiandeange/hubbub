@@ -19,7 +19,6 @@ import android.widget.LinearLayout;
 
 import com.deange.githubstatus.R;
 
-import butterknife.BindDimen;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -37,8 +36,6 @@ public class PushNotificationRow
     @BindView(R.id.list_item_setting_dot) View mDot;
     @BindView(R.id.list_item_setting_title) CheckedTextView mTitle;
     @BindView(R.id.list_item_setting_description) CheckedTextView mDescription;
-
-    @BindDimen(R.dimen.push_notification_dot_margin) float mDotMargin;
 
     private final ColorDrawable mColorDrawable;
     private boolean mIsChecked;
@@ -109,10 +106,6 @@ public class PushNotificationRow
         ViewGroup.LayoutParams lp = mDot.getLayoutParams();
         lp.width = dotSizePx;
         lp.height = dotSizePx;
-
-        ViewGroup.LayoutParams lp2 = mDotOutline.getLayoutParams();
-        lp2.width = (int) (dotSizePx + mDotMargin);
-        lp2.height = (int) (dotSizePx + mDotMargin);
 
         requestLayout();
         invalidate();
