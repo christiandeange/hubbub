@@ -1,7 +1,7 @@
 package com.deange.githubstatus.dagger.module;
 
-import com.deange.githubstatus.dagger.MockMode;
 import com.deange.githubstatus.net.GithubStatusApi;
+import com.deange.githubstatus.net.ServiceCreator;
 import com.deange.githubstatus.net.mock.MockGithubStatusApi;
 import com.google.gson.Gson;
 
@@ -31,8 +31,10 @@ public class RetrofitModule {
     @Provides
     public GithubStatusApi providesGithubStatusApi(
             final Retrofit retrofit,
-            @MockMode boolean isMockMode) {
-        return isMockMode ? new MockGithubStatusApi() : retrofit.create(GithubStatusApi.class);
+            final ServiceCreator serviceCreator) {
+        return serviceCreator.createService(
+                retrofit.create(GithubStatusApi.class), new MockGithubStatusApi(),
+                GithubStatusApi.class);
     }
 
 }

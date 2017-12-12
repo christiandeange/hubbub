@@ -21,5 +21,7 @@
     <string name="notification_minor_description">Notify me of all GitHub availability issues.</string>
     <string name="notification_none_title">None</string>
     <string name="notification_none_description">Turn off push notifications.</string>
+    <string name="empty_view_title">All good.</string>
+    <string name="empty_view_description">Nothing to see here folks. Looks like GitHub is up and running and has been stable for quite some time.\n\nNow get back to work!</string>
 
 </resources>

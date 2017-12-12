@@ -7,16 +7,17 @@ import android.support.v7.widget.SwitchCompat;
 
 import com.deange.githubstatus.R;
 import com.deange.githubstatus.dagger.MockMode;
+import com.deange.githubstatus.util.Unit;
 import com.f2prateek.rx.preferences2.Preference;
-import com.jakewharton.processphoenix.ProcessPhoenix;
 
 import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnCheckedChanged;
-
-import static com.deange.githubstatus.MainApplication.component;
+import io.reactivex.Observable;
+import io.reactivex.subjects.PublishSubject;
+import io.reactivex.subjects.Subject;
 
 public class DevSettingsDialog {
 
@@ -24,30 +25,26 @@ public class DevSettingsDialog {
 
     @BindView(R.id.dev_mock_mode) SwitchCompat mMockSwitch;
 
-    private final Context mContext;
-    private boolean mWasMockMode;
+    private final Subject<Unit> mUpdateObservable = PublishSubject.create();
 
-    public DevSettingsDialog(@NonNull final Context context) {
-        mContext = context;
-        component(context).inject(this);
+    @Inject
+    public DevSettingsDialog() {
     }
 
-    public void show() {
-        final AlertDialog dialog = new AlertDialog.Builder(mContext)
+    public void show(@NonNull final Context context) {
+        final AlertDialog dialog = new AlertDialog.Builder(context)
                 .setView(R.layout.dev_settings)
                 .setOnDismissListener(d -> onDismissed())
+                .setPositiveButton(android.R.string.ok, null)
                 .show();
 
         ButterKnife.bind(this, dialog);
 
-        mWasMockMode = mMockModePreference.get();
-        mMockSwitch.setChecked(mWasMockMode);
+        mMockSwitch.setChecked(mMockModePreference.get());
     }
 
     private void onDismissed() {
-        if (mWasMockMode != mMockModePreference.get()) {
-            ProcessPhoenix.triggerRebirth(mContext);
-        }
+        mUpdateObservable.onNext(Unit.INSTANCE);
     }
 
     @OnCheckedChanged(R.id.dev_mock_mode)
@@ -55,4 +52,7 @@ public class DevSettingsDialog {
         mMockModePreference.set(isChecked);
     }
 
+    public Observable<Unit> getUpdateObservable() {
+        return mUpdateObservable;
+    }
 }

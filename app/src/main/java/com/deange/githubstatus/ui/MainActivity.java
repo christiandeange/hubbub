@@ -10,6 +10,7 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.view.View;
 
 import com.deange.githubstatus.BuildConfig;
 import com.deange.githubstatus.R;
@@ -33,10 +34,9 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 import io.reactivex.subjects.PublishSubject;
 
-import static android.view.View.GONE;
-import static android.view.View.VISIBLE;
 import static com.deange.githubstatus.MainApplication.component;
 import static com.deange.githubstatus.ui.SpaceDecoration.VERTICAL;
+import static com.deange.githubstatus.util.ViewUtils.setVisibility;
 import static io.reactivex.Observable.just;
 import static java.util.concurrent.TimeUnit.MILLISECONDS;
 
@@ -47,6 +47,8 @@ public class MainActivity
 
     @Inject Store<CurrentStatus, BarCode> mStatusStore;
     @Inject Store<List<Message>, BarCode> mMessageStore;
+    @Inject PushNotificationDialog mPushNotificationDialog;
+    @Inject DevSettingsDialog mDevSettingsDialog;
 
     @BindView(R.id.app_bar) AppBarLayout mAppBarLayout;
     @BindView(R.id.toolbar_layout) CollapsingToolbarLayout mToolbarLayout;
@@ -55,6 +57,7 @@ public class MainActivity
     @BindView(R.id.fab_dev_settings) FloatingActionButton mFabDev;
     @BindView(R.id.swipe_layout) SwipeRefreshLayout mSwipeLayout;
     @BindView(R.id.recycler_view) RecyclerView mRecyclerView;
+    @BindView(R.id.empty_view) View mEmptyView;
 
     @BindDimen(R.dimen.app_bar_elevation) float mElevation;
 
@@ -69,7 +72,7 @@ public class MainActivity
         setSupportActionBar(mToolbar);
 
         mAppBarLayout.addOnOffsetChangedListener((layout, off) -> layout.setElevation(mElevation));
-        FontUtils.apply(mToolbarLayout, FontUtils.THIN);
+        FontUtils.apply(mToolbarLayout, FontUtils.BOLD);
         mSwipeLayout.setOnRefreshListener(this::onRefreshPulled);
 
         mAdapter = new MessagesAdapter(this);
@@ -77,11 +80,16 @@ public class MainActivity
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mRecyclerView.setAdapter(mAdapter);
 
-        mFabDev.setVisibility(BuildConfig.DEBUG ? VISIBLE : GONE);
+        setVisibility(mFabDev, BuildConfig.DEBUG);
 
         mRefreshing.distinctUntilChanged()
                    .debounce(refresh -> just(refresh).delay(refresh ? 500L : 0L, MILLISECONDS))
+                   .observeOn(AndroidSchedulers.mainThread())
                    .subscribe(mSwipeLayout::setRefreshing);
+
+        mDevSettingsDialog.getUpdateObservable()
+                          .compose(bindToLifecycle())
+                          .subscribe(a -> refreshStatus());
 
         refreshStatus();
     }
@@ -93,12 +101,12 @@ public class MainActivity
 
     @OnClick(R.id.fab)
     public void onFabClicked() {
-        new PushNotificationDialog(this).show();
+        mPushNotificationDialog.show(this);
     }
 
     @OnClick(R.id.fab_dev_settings)
     public void onDevFabClicked() {
-        new DevSettingsDialog(this).show();
+        mDevSettingsDialog.show(this);
     }
 
     public void onRefreshPulled() {
@@ -124,7 +132,13 @@ public class MainActivity
                      .compose(bindToLifecycle());
     }
 
+    void setListVisibility(final boolean isListVisible) {
+        setVisibility(mRecyclerView, isListVisible);
+        setVisibility(mEmptyView, !isListVisible);
+    }
+
     void onCurrentStatusReceived(final Response response) {
+        setListVisibility(!response.messages().isEmpty());
         final State state = response.status().state();
         final int color = getResources().getColor(state.getColorResId());
 
@@ -143,6 +157,7 @@ public class MainActivity
     }
 
     void onCurrentStatusFailed(final Throwable error) {
+        setListVisibility(true);
         error.printStackTrace();
     }
 }
