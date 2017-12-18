@@ -11,17 +11,17 @@ import org.joda.time.format.ISODateTimeFormat;
 import java.io.IOException;
 
 class LocalDateTimeConverter
-        extends TypeAdapter<LocalDateTime> {
+    extends TypeAdapter<LocalDateTime> {
 
-    private static final DateTimeFormatter ISO_FORMAT = ISODateTimeFormat.dateTimeParser();
+  private static final DateTimeFormatter ISO_FORMAT = ISODateTimeFormat.dateTimeParser();
 
-    @Override
-    public void write(final JsonWriter out, final LocalDateTime value) throws IOException {
-        out.value(value.toDateTime().toString(ISO_FORMAT));
-    }
+  @Override
+  public void write(final JsonWriter out, final LocalDateTime value) throws IOException {
+    out.value(value.toDateTime().toString(ISO_FORMAT));
+  }
 
-    @Override
-    public LocalDateTime read(final JsonReader in) throws IOException {
-        return ISO_FORMAT.parseDateTime(in.nextString()).toLocalDateTime();
-    }
+  @Override
+  public LocalDateTime read(final JsonReader in) throws IOException {
+    return ISO_FORMAT.parseDateTime(in.nextString()).toLocalDateTime();
+  }
 }

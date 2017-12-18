@@ -12,26 +12,26 @@ import java.util.List;
 
 @AutoValue
 public abstract class Response
-        implements
-        Parcelable {
+    implements
+    Parcelable {
 
-    public static Response create(final CurrentStatus status, final List<Message> messages) {
-        return new AutoValue_Response(status, messages);
-    }
+  public static Response create(final CurrentStatus status, final List<Message> messages) {
+    return new AutoValue_Response(status, messages);
+  }
 
-    public static Response error(final Throwable throwable) {
-        return new AutoValue_Response(
-                CurrentStatus.error(), Collections.singletonList(Message.error(throwable)));
-    }
+  public static Response error(final Throwable throwable) {
+    return new AutoValue_Response(
+        CurrentStatus.error(), Collections.singletonList(Message.error(throwable)));
+  }
 
-    @SerializedName("status")
-    public abstract CurrentStatus status();
+  @SerializedName("status")
+  public abstract CurrentStatus status();
 
-    @SerializedName("messages")
-    public abstract List<Message> messages();
+  @SerializedName("messages")
+  public abstract List<Message> messages();
 
-    public static TypeAdapter<Response> typeAdapter(final Gson gson) {
-        return new AutoValue_Response.GsonTypeAdapter(gson);
-    }
+  public static TypeAdapter<Response> typeAdapter(final Gson gson) {
+    return new AutoValue_Response.GsonTypeAdapter(gson);
+  }
 
 }

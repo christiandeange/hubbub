@@ -13,17 +13,17 @@ import okhttp3.logging.HttpLoggingInterceptor;
 @Module
 public class OkHttpModule {
 
-    @Provides
-    @Singleton
-    public OkHttpClient providesOkHttpClient() {
-        final HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor();
-        loggingInterceptor.setLevel(BuildConfig.DEBUG
-                ? HttpLoggingInterceptor.Level.BODY
-                : HttpLoggingInterceptor.Level.NONE);
+  @Provides
+  @Singleton
+  public OkHttpClient providesOkHttpClient() {
+    final HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor();
+    loggingInterceptor.setLevel(BuildConfig.DEBUG
+                                    ? HttpLoggingInterceptor.Level.BODY
+                                    : HttpLoggingInterceptor.Level.NONE);
 
-        return new OkHttpClient.Builder()
-                .addInterceptor(loggingInterceptor)
-                .build();
-    }
+    return new OkHttpClient.Builder()
+        .addInterceptor(loggingInterceptor)
+        .build();
+  }
 
 }

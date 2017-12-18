@@ -27,72 +27,72 @@ import io.reactivex.Single;
 import io.reactivex.disposables.Disposable;
 
 public class MessagesAdapter
-        extends RecyclerView.Adapter<MessagesAdapter.VH> {
+    extends RecyclerView.Adapter<MessagesAdapter.VH> {
 
-    private final Context mContext;
-    private final LayoutInflater mInflater;
-    @NonNull private List<Message> mMessages = Collections.emptyList();
+  private final Context mContext;
+  private final LayoutInflater mInflater;
+  @NonNull private List<Message> mMessages = Collections.emptyList();
 
-    public MessagesAdapter(final Context context) {
-        mContext = context;
-        mInflater = LayoutInflater.from(context);
+  public MessagesAdapter(final Context context) {
+    mContext = context;
+    mInflater = LayoutInflater.from(context);
+  }
+
+  @Override
+  public VH onCreateViewHolder(final ViewGroup parent, final int viewType) {
+    return new VH(mInflater.inflate(R.layout.list_item_message, parent, false));
+  }
+
+  @Override
+  public void onBindViewHolder(final VH holder, final int position) {
+    final Message message = mMessages.get(position);
+    final State state = message.state();
+    final int color = ContextCompat.getColor(mContext, state.getColorResId());
+
+    ((LinearLayout.LayoutParams) holder.mTitle.getLayoutParams()).weight = state.getWeight();
+
+    holder.mTitle.setBackgroundColor(color);
+    holder.mTitle.setText(mContext.getString(state.getTitleResId()).toLowerCase());
+    holder.mBody.setText(message.bodyForNotification(mContext));
+    holder.mDate.setText(Formatter.formatLocalDateTime(message.createdOn()));
+  }
+
+  @Override
+  public int getItemCount() {
+    return mMessages.size();
+  }
+
+  public Disposable setResponse(final Single<Response> response) {
+    return response.subscribe(this::onResponseReceived, this::onResponseFailed);
+  }
+
+  private void onResponseReceived(final Response response) {
+    setMessages(response.messages());
+  }
+
+  private void onResponseFailed(final Throwable throwable) {
+    setMessages(Collections.emptyList());
+  }
+
+  void setMessages(@NonNull final List<Message> messages) {
+    final List<Message> oldMessages = mMessages;
+    mMessages = messages;
+
+    final DiffUtil.Callback callback = new SimpleDiffCallback<>(
+        oldMessages, mMessages,
+        (m1, m2) -> m1.id() == m2.id());
+
+    DiffUtil.calculateDiff(callback, false).dispatchUpdatesTo(this);
+  }
+
+  static class VH extends RecyclerView.ViewHolder {
+    @BindView(R.id.message_title) TextView mTitle;
+    @BindView(R.id.message_body) TextView mBody;
+    @BindView(R.id.message_date) TextView mDate;
+
+    public VH(final View root) {
+      super(root);
+      ButterKnife.bind(this, root);
     }
-
-    @Override
-    public VH onCreateViewHolder(final ViewGroup parent, final int viewType) {
-        return new VH(mInflater.inflate(R.layout.list_item_message, parent, false));
-    }
-
-    @Override
-    public void onBindViewHolder(final VH holder, final int position) {
-        final Message message = mMessages.get(position);
-        final State state = message.state();
-        final int color = ContextCompat.getColor(mContext, state.getColorResId());
-
-        ((LinearLayout.LayoutParams) holder.mTitle.getLayoutParams()).weight = state.getWeight();
-
-        holder.mTitle.setBackgroundColor(color);
-        holder.mTitle.setText(mContext.getString(state.getTitleResId()).toLowerCase());
-        holder.mBody.setText(message.bodyForNotification(mContext));
-        holder.mDate.setText(Formatter.formatLocalDateTime(message.createdOn()));
-    }
-
-    @Override
-    public int getItemCount() {
-        return mMessages.size();
-    }
-
-    public Disposable setResponse(final Single<Response> response) {
-        return response.subscribe(this::onResponseReceived, this::onResponseFailed);
-    }
-
-    private void onResponseReceived(final Response response) {
-        setMessages(response.messages());
-    }
-
-    private void onResponseFailed(final Throwable throwable) {
-        setMessages(Collections.emptyList());
-    }
-
-    void setMessages(@NonNull final List<Message> messages) {
-        final List<Message> oldMessages = mMessages;
-        mMessages = messages;
-
-        final DiffUtil.Callback callback = new SimpleDiffCallback<>(
-                oldMessages, mMessages,
-                (m1, m2) -> m1.id() == m2.id());
-
-        DiffUtil.calculateDiff(callback, false).dispatchUpdatesTo(this);
-    }
-
-    static class VH extends RecyclerView.ViewHolder {
-        @BindView(R.id.message_title) TextView mTitle;
-        @BindView(R.id.message_body) TextView mBody;
-        @BindView(R.id.message_date) TextView mDate;
-
-        public VH(final View root) {
-            super(root);
-            ButterKnife.bind(this, root);
-        }
-    }
+  }
 }

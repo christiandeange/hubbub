@@ -14,21 +14,21 @@ import dagger.Component;
 
 @Singleton
 @Component(modules = {
-        AppModule.class,
-        GsonModule.class,
-        StoreModule.class,
-        OkHttpModule.class,
-        RetrofitModule.class,
-        SharedPrefsModule.class,
+    AppModule.class,
+    GsonModule.class,
+    StoreModule.class,
+    OkHttpModule.class,
+    RetrofitModule.class,
+    SharedPrefsModule.class,
 })
 public interface AppComponent
-        extends BaseAppComponent {
+    extends BaseAppComponent {
 
-    @Component.Builder
-    interface Builder {
-        Builder appModule(final AppModule appModule);
+  @Component.Builder
+  interface Builder {
+    Builder appModule(final AppModule appModule);
 
-        AppComponent build();
-    }
+    AppComponent build();
+  }
 
 }

@@ -13,39 +13,39 @@ import net.danlew.android.joda.JodaTimeAndroid;
 
 
 public class MainApplication
-        extends Application {
+    extends Application {
 
-    private static final String TAG = "MainApplication";
+  private static final String TAG = "MainApplication";
 
-    private BaseAppComponent mAppComponent;
+  private BaseAppComponent mAppComponent;
 
-    public static MainApplication get(final Context context) {
-        return (MainApplication) context.getApplicationContext();
-    }
+  public static MainApplication get(final Context context) {
+    return (MainApplication) context.getApplicationContext();
+  }
 
-    @Override
-    public void onCreate() {
-        Log.d(TAG, "onCreate()");
-        super.onCreate();
+  @Override
+  public void onCreate() {
+    Log.d(TAG, "onCreate()");
+    super.onCreate();
 
-        mAppComponent = buildAppComponent();
-        mAppComponent.inject(this);
+    mAppComponent = buildAppComponent();
+    mAppComponent.inject(this);
 
-        FontUtils.init(this);
-        JodaTimeAndroid.init(this);
+    FontUtils.init(this);
+    JodaTimeAndroid.init(this);
 
-        mAppComponent.notificationController().register();
-    }
+    mAppComponent.notificationController().register();
+  }
 
-    BaseAppComponent buildAppComponent() {
-        return DaggerAppComponent.builder()
-                                 .appModule(AppModule.create(this))
-                                 .build();
-    }
+  BaseAppComponent buildAppComponent() {
+    return DaggerAppComponent.builder()
+                             .appModule(AppModule.create(this))
+                             .build();
+  }
 
-    public static <T extends BaseAppComponent> T component(final Context context) {
-        //noinspection unchecked
-        return (T) ((MainApplication) context.getApplicationContext()).mAppComponent;
-    }
+  public static <T extends BaseAppComponent> T component(final Context context) {
+    //noinspection unchecked
+    return (T) ((MainApplication) context.getApplicationContext()).mAppComponent;
+  }
 
 }

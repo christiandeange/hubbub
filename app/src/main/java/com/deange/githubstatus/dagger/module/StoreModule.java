@@ -18,20 +18,20 @@ import dagger.Provides;
 @Module
 public class StoreModule {
 
-    @Provides
-    @Singleton
-    public Store<CurrentStatus, BarCode> providesStatusStore(final GithubStatusApi api) {
-        return StoreBuilder.<CurrentStatus>barcode()
-                .fetcher(barcode -> api.status())
-                .open();
-    }
+  @Provides
+  @Singleton
+  public Store<CurrentStatus, BarCode> providesStatusStore(final GithubStatusApi api) {
+    return StoreBuilder.<CurrentStatus>barcode()
+        .fetcher(barcode -> api.status())
+        .open();
+  }
 
-    @Provides
-    @Singleton
-    public Store<List<Message>, BarCode> providesMessageStore(final GithubStatusApi api) {
-        return StoreBuilder.<List<Message>>barcode()
-                .fetcher(barcode -> api.messages())
-                .open();
-    }
+  @Provides
+  @Singleton
+  public Store<List<Message>, BarCode> providesMessageStore(final GithubStatusApi api) {
+    return StoreBuilder.<List<Message>>barcode()
+        .fetcher(barcode -> api.messages())
+        .open();
+  }
 
 }

@@ -16,51 +16,51 @@ import javax.inject.Inject;
 import static com.deange.githubstatus.MainApplication.component;
 
 public class FirebaseService
-        extends FirebaseMessagingService {
+    extends FirebaseMessagingService {
 
-    private static final String TAG = "FirebaseService";
-    private static final String KEY_MESSAGE = "message";
+  private static final String TAG = "FirebaseService";
+  private static final String KEY_MESSAGE = "message";
 
-    public static final String ACTION_MESSAGE_RECEIVED = "hubbub.intent.action.message_received";
+  public static final String ACTION_MESSAGE_RECEIVED = "hubbub.intent.action.message_received";
 
-    @Inject Gson mGson;
+  @Inject Gson mGson;
 
-    @Override
-    public void onCreate() {
-        super.onCreate();
-        component(this).inject(this);
+  @Override
+  public void onCreate() {
+    super.onCreate();
+    component(this).inject(this);
+  }
+
+  @Override
+  public void onMessageReceived(final RemoteMessage remoteMessage) {
+    final JsonObject jsonObject = new JsonObject();
+    for (final Map.Entry<String, String> entry : remoteMessage.getData().entrySet()) {
+      jsonObject.addProperty(entry.getKey(), entry.getValue());
     }
 
-    @Override
-    public void onMessageReceived(final RemoteMessage remoteMessage) {
-        final JsonObject jsonObject = new JsonObject();
-        for (final Map.Entry<String, String> entry : remoteMessage.getData().entrySet()) {
-            jsonObject.addProperty(entry.getKey(), entry.getValue());
-        }
+    final Message message = mGson.fromJson(jsonObject, Message.class);
 
-        final Message message = mGson.fromJson(jsonObject, Message.class);
+    Log.d(TAG, "Message data = " + message);
 
-        Log.d(TAG, "Message data = " + message);
+    final Intent intent = new Intent(ACTION_MESSAGE_RECEIVED);
+    intent.putExtra(KEY_MESSAGE, message);
+    sendBroadcast(intent);
+  }
 
-        final Intent intent = new Intent(ACTION_MESSAGE_RECEIVED);
-        intent.putExtra(KEY_MESSAGE, message);
-        sendBroadcast(intent);
-    }
+  @Override
+  public void onMessageSent(final String msgId) {
+  }
 
-    @Override
-    public void onMessageSent(final String msgId) {
-    }
+  @Override
+  public void onSendError(final String msgId, final Exception exception) {
+  }
 
-    @Override
-    public void onSendError(final String msgId, final Exception exception) {
-    }
+  @Override
+  public void onDeletedMessages() {
+  }
 
-    @Override
-    public void onDeletedMessages() {
-    }
-
-    public static Message getMessageFromIntent(final Intent intent) {
-        return intent.getParcelableExtra(KEY_MESSAGE);
-    }
+  public static Message getMessageFromIntent(final Intent intent) {
+    return intent.getParcelableExtra(KEY_MESSAGE);
+  }
 
 }

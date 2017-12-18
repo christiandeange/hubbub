@@ -14,13 +14,13 @@ import dagger.Provides;
 @Module
 public class GsonModule {
 
-    @Provides
-    @Singleton
-    public Gson providesGson() {
-        return new GsonBuilder()
-                .registerTypeAdapterFactory(ModelGsonFactory.create())
-                .registerTypeAdapterFactory(new LocalDateTimeConverterFactory())
-                .create();
-    }
+  @Provides
+  @Singleton
+  public Gson providesGson() {
+    return new GsonBuilder()
+        .registerTypeAdapterFactory(ModelGsonFactory.create())
+        .registerTypeAdapterFactory(new LocalDateTimeConverterFactory())
+        .create();
+  }
 
 }

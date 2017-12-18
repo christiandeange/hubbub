@@ -13,7 +13,7 @@
         app:notificationDescription="@string/notification_major_description"
         app:notificationDotSize="24dp"
         app:notificationTitle="@string/notification_major_title"
-        app:notificationTopic="major"/>
+        app:notificationTopic="major" />
 
     <com.deange.githubstatus.ui.PushNotificationRow
         android:layout_width="match_parent"
@@ -22,7 +22,7 @@
         app:notificationDescription="@string/notification_minor_description"
         app:notificationDotSize="16dp"
         app:notificationTitle="@string/notification_minor_title"
-        app:notificationTopic="minor"/>
+        app:notificationTopic="minor" />
 
     <com.deange.githubstatus.ui.PushNotificationRow
         android:layout_width="match_parent"

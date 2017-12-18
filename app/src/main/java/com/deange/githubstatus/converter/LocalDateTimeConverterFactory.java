@@ -8,18 +8,18 @@ import com.google.gson.reflect.TypeToken;
 import org.joda.time.LocalDateTime;
 
 public class LocalDateTimeConverterFactory
-        implements
-        TypeAdapterFactory {
+    implements
+    TypeAdapterFactory {
 
-    @SuppressWarnings("unchecked")
-    @Override
-    public <T> TypeAdapter<T> create(final Gson gson, final TypeToken<T> type) {
-        Class<T> rawType = (Class<T>) type.getRawType();
-        if (LocalDateTime.class.isAssignableFrom(rawType)) {
-            return (TypeAdapter<T>) new LocalDateTimeConverter().nullSafe();
-        } else {
-            return null;
-        }
+  @SuppressWarnings("unchecked")
+  @Override
+  public <T> TypeAdapter<T> create(final Gson gson, final TypeToken<T> type) {
+    Class<T> rawType = (Class<T>) type.getRawType();
+    if (LocalDateTime.class.isAssignableFrom(rawType)) {
+      return (TypeAdapter<T>) new LocalDateTimeConverter().nullSafe();
+    } else {
+      return null;
     }
+  }
 
 }

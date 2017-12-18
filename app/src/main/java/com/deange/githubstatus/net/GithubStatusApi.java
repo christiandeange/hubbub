@@ -10,13 +10,13 @@ import retrofit2.http.GET;
 
 public interface GithubStatusApi {
 
-    @GET("/api/status.json")
-    Single<CurrentStatus> status();
+  @GET("/api/status.json")
+  Single<CurrentStatus> status();
 
-    @GET("/api/last-message.json")
-    Single<Message> lastMessage();
+  @GET("/api/last-message.json")
+  Single<Message> lastMessage();
 
-    @GET("/api/messages.json")
-    Single<List<Message>> messages();
+  @GET("/api/messages.json")
+  Single<List<Message>> messages();
 
 }

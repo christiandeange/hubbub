@@ -13,30 +13,30 @@ import org.joda.time.LocalDateTime;
 
 @AutoValue
 public abstract class CurrentStatus
-        implements
-        Parcelable {
+    implements
+    Parcelable {
 
-    public static CurrentStatus create(final State state, final LocalDateTime time) {
-        return new AutoValue_CurrentStatus(state, time);
-    }
+  public static CurrentStatus create(final State state, final LocalDateTime time) {
+    return new AutoValue_CurrentStatus(state, time);
+  }
 
-    public static CurrentStatus error() {
-        return new AutoValue_CurrentStatus(State.ERROR, LocalDateTime.now());
-    }
+  public static CurrentStatus error() {
+    return new AutoValue_CurrentStatus(State.ERROR, LocalDateTime.now());
+  }
 
-    @SerializedName("status")
-    public abstract State state();
+  @SerializedName("status")
+  public abstract State state();
 
-    @SerializedName("last_updated")
-    public abstract LocalDateTime updatedAt();
+  @SerializedName("last_updated")
+  public abstract LocalDateTime updatedAt();
 
-    @Memoized
-    public long id() {
-        return updatedAt().toDate().getTime();
-    }
+  @Memoized
+  public long id() {
+    return updatedAt().toDate().getTime();
+  }
 
-    public static TypeAdapter<CurrentStatus> typeAdapter(final Gson gson) {
-        return new AutoValue_CurrentStatus.GsonTypeAdapter(gson);
-    }
+  public static TypeAdapter<CurrentStatus> typeAdapter(final Gson gson) {
+    return new AutoValue_CurrentStatus.GsonTypeAdapter(gson);
+  }
 
 }

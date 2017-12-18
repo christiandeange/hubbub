@@ -10,13 +10,13 @@ import com.deange.githubstatus.ui.MainActivity;
 
 public interface BaseAppComponent {
 
-    TopicController topicController();
+  TopicController topicController();
 
-    NotificationController notificationController();
+  NotificationController notificationController();
 
-    // Injection sites
-    void inject(final MainApplication target);
-    void inject(final MainActivity target);
-    void inject(final FirebaseService target);
-    void inject(final DevSettingsDialog target);
+  // Injection sites
+  void inject(final MainApplication target);
+  void inject(final MainActivity target);
+  void inject(final FirebaseService target);
+  void inject(final DevSettingsDialog target);
 }
