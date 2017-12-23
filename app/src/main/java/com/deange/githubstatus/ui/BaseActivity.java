@@ -6,19 +6,23 @@ import android.os.Handler;
 import android.os.Looper;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.Nullable;
+import android.support.v7.app.AppCompatActivity;
 
 import com.google.android.gms.common.GoogleApiAvailability;
 
 import butterknife.ButterKnife;
+import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.disposables.Disposable;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 import static com.deange.githubstatus.MainApplication.component;
 
 
 public abstract class BaseActivity
-    extends RxLifecycleActivity {
+    extends AppCompatActivity {
 
   private final Handler mHandler = new Handler(Looper.getMainLooper());
+  private final CompositeDisposable mDisposables = new CompositeDisposable();
 
   @Override
   protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -30,10 +34,10 @@ public abstract class BaseActivity
       ButterKnife.bind(this);
     }
 
-    component(this).topicController()
-                   .getTopic()
-                   .compose(bindToLifecycle())
-                   .subscribe(this::onTopicChanged);
+    unsubscribeOnDestroy(
+        component(this).topicController()
+                       .getTopic()
+                       .subscribe(this::onTopicChanged));
   }
 
   private void onTopicChanged(final String newTopic) {
@@ -47,6 +51,16 @@ public abstract class BaseActivity
   @Override
   protected void attachBaseContext(Context newBase) {
     super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
+  }
+
+  @Override
+  protected void onDestroy() {
+    mDisposables.dispose();
+    super.onDestroy();
+  }
+
+  public void unsubscribeOnDestroy(final Disposable disposable) {
+    mDisposables.add(disposable);
   }
 
   protected void post(final Runnable runnable) {

@@ -19,30 +19,30 @@ public final class ViewUtils {
     view.setVisibility(visible ? VISIBLE : GONE);
   }
 
-  public static int getAttr(@AttrRes final int attr, final Context context) {
+  public static int getAttrIdValue(@AttrRes final int attr, final Context context) {
     final TypedValue value = new TypedValue();
     context.getTheme().resolveAttribute(attr, value, true);
     return value.resourceId;
   }
 
   public static Drawable getDrawable(@AttrRes final int attr, final Context context) {
-    return context.getDrawable(getAttr(attr, context));
+    return context.getDrawable(getAttrIdValue(attr, context));
   }
 
   public static String getString(@AttrRes final int attr, final Context context) {
-    return context.getString(getAttr(attr, context));
+    return context.getString(getAttrIdValue(attr, context));
   }
 
   public static int getInteger(@AttrRes final int attr, final Context context) {
-    return context.getResources().getInteger(getAttr(attr, context));
+    return context.getResources().getInteger(getAttrIdValue(attr, context));
   }
 
   public static boolean getBoolean(@AttrRes final int attr, final Context context) {
-    return context.getResources().getBoolean(getAttr(attr, context));
+    return context.getResources().getBoolean(getAttrIdValue(attr, context));
   }
 
   public static int getColor(@AttrRes final int attr, final Context context) {
-    return context.getResources().getColor(getAttr(attr, context));
+    return context.getResources().getColor(getAttrIdValue(attr, context));
   }
 
 }

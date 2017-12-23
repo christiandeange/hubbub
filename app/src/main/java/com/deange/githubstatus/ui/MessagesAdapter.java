@@ -1,6 +1,7 @@
 package com.deange.githubstatus.ui;
 
 import android.content.Context;
+import android.support.annotation.CheckResult;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.util.DiffUtil;
@@ -21,13 +22,18 @@ import com.deange.githubstatus.util.SimpleDiffCallback;
 import java.util.Collections;
 import java.util.List;
 
+import javax.inject.Inject;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import io.reactivex.Single;
 import io.reactivex.disposables.Disposable;
+
+import static com.deange.githubstatus.MainApplication.component;
 
 public class MessagesAdapter
     extends RecyclerView.Adapter<MessagesAdapter.VH> {
+
+  @Inject GithubRunner mRunner;
 
   private final Context mContext;
   private final LayoutInflater mInflater;
@@ -36,6 +42,8 @@ public class MessagesAdapter
   public MessagesAdapter(final Context context) {
     mContext = context;
     mInflater = LayoutInflater.from(context);
+
+    component(mContext).inject(this);
   }
 
   @Override
@@ -62,8 +70,9 @@ public class MessagesAdapter
     return mMessages.size();
   }
 
-  public Disposable setResponse(final Single<Response> response) {
-    return response.subscribe(this::onResponseReceived, this::onResponseFailed);
+  @CheckResult
+  public Disposable refreshStatus() {
+    return mRunner.getStatus().subscribe(this::onResponseReceived, this::onResponseFailed);
   }
 
   private void onResponseReceived(final Response response) {

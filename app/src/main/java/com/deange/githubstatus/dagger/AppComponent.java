@@ -5,7 +5,6 @@ import com.deange.githubstatus.dagger.module.GsonModule;
 import com.deange.githubstatus.dagger.module.OkHttpModule;
 import com.deange.githubstatus.dagger.module.RetrofitModule;
 import com.deange.githubstatus.dagger.module.SharedPrefsModule;
-import com.deange.githubstatus.dagger.module.StoreModule;
 
 import javax.inject.Singleton;
 
@@ -16,7 +15,6 @@ import dagger.Component;
 @Component(modules = {
     AppModule.class,
     GsonModule.class,
-    StoreModule.class,
     OkHttpModule.class,
     RetrofitModule.class,
     SharedPrefsModule.class,

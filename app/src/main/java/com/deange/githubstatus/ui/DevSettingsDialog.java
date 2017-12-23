@@ -52,7 +52,7 @@ public class DevSettingsDialog {
     mMockModePreference.set(isChecked);
   }
 
-  public Observable<Unit> getUpdateObservable() {
+  public Observable<Unit> onDevSettingsChanged() {
     return mUpdateObservable;
   }
 }

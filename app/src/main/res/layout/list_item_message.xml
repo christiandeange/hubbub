@@ -19,7 +19,6 @@
             android:layout_weight="1"
             android:gravity="end|center_vertical"
             android:padding="8dp"
-            android:text="@string/app_name"
             android:textAppearance="@style/TextAppearance.AppCompat.Title"
             android:textColor="?android:textColorPrimaryInverse"
             app:fontName="@string/font_light"
