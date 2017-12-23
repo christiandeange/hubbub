@@ -33,23 +33,23 @@ public class NotificationController {
   private static final String TAG = "NotificationController";
   private static final int NOTIFICATION_ID = 0x420;
 
-  private final Object mLock = new Object();
-  private final Context mContext;
-  private final NotificationManager mManager;
-  private volatile boolean mRegistered;
+  private final Object lock = new Object();
+  private final Context context;
+  private final NotificationManager manager;
+  private volatile boolean registered;
 
   @Inject
   public NotificationController(final Context context) {
-    mContext = context;
-    mManager = (NotificationManager) context.getSystemService(NOTIFICATION_SERVICE);
+    this.context = context;
+    manager = (NotificationManager) context.getSystemService(NOTIFICATION_SERVICE);
   }
 
   public void register() {
-    if (!mRegistered) {
-      synchronized (mLock) {
-        if (!mRegistered) {
+    if (!registered) {
+      synchronized (lock) {
+        if (!registered) {
           doRegister();
-          mRegistered = true;
+          registered = true;
         }
       }
     }
@@ -59,7 +59,7 @@ public class NotificationController {
     ensureNotificationChannels();
 
     // Listen for incoming status message updates
-    RxBroadcastReceiver.create(mContext, new IntentFilter(ACTION_MESSAGE_RECEIVED))
+    RxBroadcastReceiver.create(context, new IntentFilter(ACTION_MESSAGE_RECEIVED))
                        .map(FirebaseService::getMessageFromIntent)
                        .subscribe(this::showNotification);
   }
@@ -69,13 +69,13 @@ public class NotificationController {
 
     final String channelId = state.name();
 
-    final String title = mContext.getString(R.string.app_name);
-    final String description = message.bodyForNotification(mContext);
+    final String title = context.getString(R.string.app_name);
+    final String description = message.bodyForNotification(context);
     final int icon = R.drawable.ic_notification_git;
-    final int color = ContextCompat.getColor(mContext, state.getColorResId());
+    final int color = ContextCompat.getColor(context, state.getColorResId());
 
     final NotificationCompat.Builder builder =
-        new NotificationCompat.Builder(mContext, channelId);
+        new NotificationCompat.Builder(context, channelId);
     builder.setContentTitle(title);
     builder.setContentText(description);
     builder.setSmallIcon(icon);
@@ -84,12 +84,12 @@ public class NotificationController {
 
     builder.setAutoCancel(true);
     builder.setContentIntent(PendingIntent.getActivity(
-        mContext,
+        context,
         NOTIFICATION_ID,
-        new Intent(mContext, MainActivity.class),
+        new Intent(context, MainActivity.class),
         PendingIntent.FLAG_UPDATE_CURRENT));
 
-    mManager.notify(NOTIFICATION_ID, builder.build());
+    manager.notify(NOTIFICATION_ID, builder.build());
   }
 
   private void ensureNotificationChannels() {
@@ -98,9 +98,9 @@ public class NotificationController {
     }
 
     final Map<String, NotificationChannel> existingChannels =
-        mManager.getNotificationChannels()
-                .stream()
-                .collect(Collectors.toMap(
+        manager.getNotificationChannels()
+               .stream()
+               .collect(Collectors.toMap(
                     NotificationChannel::getId,
                     channel -> channel));
 
@@ -111,9 +111,9 @@ public class NotificationController {
         continue;
       }
 
-      final String name = mContext.getString(state.getTitleResId());
-      final String description = mContext.getString(state.getDescriptionResId());
-      final int color = ContextCompat.getColor(mContext, state.getColorResId());
+      final String name = context.getString(state.getTitleResId());
+      final String description = context.getString(state.getDescriptionResId());
+      final int color = ContextCompat.getColor(context, state.getColorResId());
       final int importance = NotificationManager.IMPORTANCE_DEFAULT;
 
       final NotificationChannel channel = new NotificationChannel(id, name, importance);
@@ -123,13 +123,13 @@ public class NotificationController {
       channel.setLightColor(color);
 
       Log.d(TAG, "Creating notification channel: " + id);
-      mManager.createNotificationChannel(channel);
+      manager.createNotificationChannel(channel);
     }
 
     // Leftover channels (maybe from an update?)
     for (final String staleChannelId : existingChannels.keySet()) {
       Log.d(TAG, "Deleting notification channel: " + staleChannelId);
-      mManager.deleteNotificationChannel(staleChannelId);
+      manager.deleteNotificationChannel(staleChannelId);
     }
 
     existingChannels.clear();

@@ -13,15 +13,15 @@ import io.reactivex.schedulers.Schedulers;
 @Singleton
 public class GithubRunner {
 
-  private final GithubStatusApi mApi;
+  private final GithubStatusApi api;
 
   @Inject
   GithubRunner(final GithubStatusApi api) {
-    mApi = api;
+    this.api = api;
   }
 
   public Single<Response> getStatus() {
-    return Single.zip(mApi.status(), mApi.messages(), Response::create)
+    return Single.zip(api.status(), api.messages(), Response::create)
                  .onErrorReturn(Response::error)
                  .subscribeOn(Schedulers.io())
                  .observeOn(AndroidSchedulers.mainThread());

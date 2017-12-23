@@ -19,14 +19,14 @@ public class SpaceDecoration
   private static final String TAG = "SpaceDecoration";
   private static final int[] ATTRS = new int[]{android.R.attr.dividerHeight};
 
-  private int mDividerSize;
-  private int mOrientation;
+  private int dividerSize;
+  private int orientation;
 
   public SpaceDecoration(final Context context, @Orientation final int orientation) {
     final TypedArray a = context.obtainStyledAttributes(ATTRS);
 
     if (a.hasValue(0)) {
-      mDividerSize = a.getDimensionPixelSize(0, 0);
+      dividerSize = a.getDimensionPixelSize(0, 0);
 
     } else {
       Log.w(TAG, "@android:attr/dividerHeight was not set in the theme used for this "
@@ -42,11 +42,7 @@ public class SpaceDecoration
       throw new IllegalArgumentException(
           "Invalid orientation. It should be either HORIZONTAL or VERTICAL");
     }
-    mOrientation = orientation;
-  }
-
-  public void setDividerSize(final int dividerSize) {
-    mDividerSize = dividerSize;
+    this.orientation = orientation;
   }
 
   @Override
@@ -64,17 +60,17 @@ public class SpaceDecoration
       final RecyclerView.State state) {
 
     final int position = parent.getChildAdapterPosition(view);
-    final int firstPositionSize = (position == 0) ? mDividerSize : 0;
+    final int firstPositionSize = (position == 0) ? dividerSize : 0;
 
-    if (mDividerSize == 0) {
+    if (dividerSize == 0) {
       outRect.set(0, 0, 0, 0);
 
     } else {
-      if (mOrientation == VERTICAL) {
-        outRect.set(0, firstPositionSize, 0, mDividerSize);
+      if (orientation == VERTICAL) {
+        outRect.set(0, firstPositionSize, 0, dividerSize);
 
       } else {
-        outRect.set(firstPositionSize, 0, mDividerSize, 0);
+        outRect.set(firstPositionSize, 0, dividerSize, 0);
       }
     }
   }

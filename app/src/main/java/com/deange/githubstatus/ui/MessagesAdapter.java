@@ -33,46 +33,46 @@ import static com.deange.githubstatus.MainApplication.component;
 public class MessagesAdapter
     extends RecyclerView.Adapter<MessagesAdapter.VH> {
 
-  @Inject GithubRunner mRunner;
+  @Inject GithubRunner runner;
 
-  private final Context mContext;
-  private final LayoutInflater mInflater;
-  @NonNull private List<Message> mMessages = Collections.emptyList();
+  private final Context context;
+  private final LayoutInflater inflater;
+  @NonNull private List<Message> messages = Collections.emptyList();
 
   public MessagesAdapter(final Context context) {
-    mContext = context;
-    mInflater = LayoutInflater.from(context);
+    this.context = context;
+    inflater = LayoutInflater.from(context);
 
-    component(mContext).inject(this);
+    component(this.context).inject(this);
   }
 
   @Override
   public VH onCreateViewHolder(final ViewGroup parent, final int viewType) {
-    return new VH(mInflater.inflate(R.layout.list_item_message, parent, false));
+    return new VH(inflater.inflate(R.layout.list_item_message, parent, false));
   }
 
   @Override
   public void onBindViewHolder(final VH holder, final int position) {
-    final Message message = mMessages.get(position);
+    final Message message = this.messages.get(position);
     final State state = message.state();
-    final int color = ContextCompat.getColor(mContext, state.getColorResId());
+    final int color = ContextCompat.getColor(context, state.getColorResId());
 
     ((LinearLayout.LayoutParams) holder.mTitle.getLayoutParams()).weight = state.getWeight();
 
     holder.mTitle.setBackgroundColor(color);
-    holder.mTitle.setText(mContext.getString(state.getTitleResId()).toLowerCase());
-    holder.mBody.setText(message.bodyForNotification(mContext));
+    holder.mTitle.setText(context.getString(state.getTitleResId()).toLowerCase());
+    holder.mBody.setText(message.bodyForNotification(context));
     holder.mDate.setText(Formatter.formatLocalDateTime(message.createdOn()));
   }
 
   @Override
   public int getItemCount() {
-    return mMessages.size();
+    return messages.size();
   }
 
   @CheckResult
   public Disposable refreshStatus() {
-    return mRunner.getStatus().subscribe(this::onResponseReceived, this::onResponseFailed);
+    return runner.getStatus().subscribe(this::onResponseReceived, this::onResponseFailed);
   }
 
   private void onResponseReceived(final Response response) {
@@ -84,11 +84,11 @@ public class MessagesAdapter
   }
 
   void setMessages(@NonNull final List<Message> messages) {
-    final List<Message> oldMessages = mMessages;
-    mMessages = messages;
+    final List<Message> oldMessages = this.messages;
+    this.messages = messages;
 
     final DiffUtil.Callback callback = new SimpleDiffCallback<>(
-        oldMessages, mMessages,
+        oldMessages, this.messages,
         (m1, m2) -> m1.id() == m2.id());
 
     DiffUtil.calculateDiff(callback, false).dispatchUpdatesTo(this);

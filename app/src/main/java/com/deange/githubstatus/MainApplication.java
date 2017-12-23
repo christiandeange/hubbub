@@ -17,7 +17,7 @@ public class MainApplication
 
   private static final String TAG = "MainApplication";
 
-  private BaseAppComponent mAppComponent;
+  private BaseAppComponent appComponent;
 
   public static MainApplication get(final Context context) {
     return (MainApplication) context.getApplicationContext();
@@ -28,13 +28,13 @@ public class MainApplication
     Log.d(TAG, "onCreate()");
     super.onCreate();
 
-    mAppComponent = buildAppComponent();
-    mAppComponent.inject(this);
+    appComponent = buildAppComponent();
+    appComponent.inject(this);
 
     FontUtils.init(this);
     JodaTimeAndroid.init(this);
 
-    mAppComponent.notificationController().register();
+    appComponent.notificationController().register();
   }
 
   BaseAppComponent buildAppComponent() {
@@ -45,7 +45,7 @@ public class MainApplication
 
   public static <T extends BaseAppComponent> T component(final Context context) {
     //noinspection unchecked
-    return (T) ((MainApplication) context.getApplicationContext()).mAppComponent;
+    return (T) ((MainApplication) context.getApplicationContext()).appComponent;
   }
 
 }

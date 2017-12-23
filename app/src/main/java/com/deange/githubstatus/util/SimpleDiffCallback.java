@@ -8,10 +8,10 @@ import java.util.Objects;
 public class SimpleDiffCallback<T>
     extends DiffUtil.Callback {
 
-  private final List<T> mOldList;
-  private final List<T> mNewList;
-  private final DiffComparator<T> mIdFunction;
-  private final DiffComparator<T> mEqualsFunction;
+  private final List<T> oldList;
+  private final List<T> newList;
+  private final DiffComparator<T> idFunc;
+  private final DiffComparator<T> eqFunc;
 
   public SimpleDiffCallback(
       final List<T> oldList,
@@ -32,30 +32,30 @@ public class SimpleDiffCallback<T>
       final DiffComparator<T> idFunction,
       final DiffComparator<T> equalsFunction) {
 
-    mOldList = oldList;
-    mNewList = newList;
-    mIdFunction = idFunction;
-    mEqualsFunction = equalsFunction;
+    this.oldList = oldList;
+    this.newList = newList;
+    idFunc = idFunction;
+    eqFunc = equalsFunction;
   }
 
   @Override
   public int getOldListSize() {
-    return mOldList.size();
+    return oldList.size();
   }
 
   @Override
   public int getNewListSize() {
-    return mNewList.size();
+    return newList.size();
   }
 
   @Override
   public boolean areItemsTheSame(final int oldItemPosition, final int newItemPosition) {
-    return mIdFunction.test(mOldList.get(oldItemPosition), mNewList.get(newItemPosition));
+    return idFunc.test(oldList.get(oldItemPosition), newList.get(newItemPosition));
   }
 
   @Override
   public boolean areContentsTheSame(final int oldItemPosition, final int newItemPosition) {
-    return mEqualsFunction.test(mOldList.get(oldItemPosition), mNewList.get(newItemPosition));
+    return eqFunc.test(oldList.get(oldItemPosition), newList.get(newItemPosition));
   }
 
   public interface DiffComparator<T> {

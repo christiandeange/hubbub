@@ -2,7 +2,6 @@ package com.deange.githubstatus.ui;
 
 import android.app.ActivityManager;
 import android.graphics.BitmapFactory;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.ColorInt;
 import android.support.design.widget.AppBarLayout;
@@ -37,23 +36,23 @@ import static java.util.concurrent.TimeUnit.MILLISECONDS;
 public class MainActivity
     extends BaseActivity {
 
-  @Inject GithubRunner mRunner;
-  @Inject PushNotificationDialog mPushNotificationDialog;
-  @Inject DevSettingsDialog mDevSettingsDialog;
+  @Inject GithubRunner runner;
+  @Inject PushNotificationDialog pushNotificationDialog;
+  @Inject DevSettingsDialog devSettingsDialog;
 
-  @BindView(R.id.app_bar) AppBarLayout mAppBarLayout;
-  @BindView(R.id.toolbar_layout) CollapsingToolbarLayout mToolbarLayout;
-  @BindView(R.id.toolbar) Toolbar mToolbar;
-  @BindView(R.id.fab) FloatingActionButton mFab;
-  @BindView(R.id.fab_dev_settings) FloatingActionButton mFabDev;
-  @BindView(R.id.swipe_layout) SwipeRefreshLayout mSwipeLayout;
-  @BindView(R.id.recycler_view) RecyclerView mRecyclerView;
-  @BindView(R.id.empty_view) View mEmptyView;
+  @BindView(R.id.app_bar) AppBarLayout appBarLayout;
+  @BindView(R.id.toolbar_layout) CollapsingToolbarLayout toolbarLayout;
+  @BindView(R.id.toolbar) Toolbar toolbar;
+  @BindView(R.id.fab) FloatingActionButton fab;
+  @BindView(R.id.fab_dev_settings) FloatingActionButton fabDev;
+  @BindView(R.id.swipe_layout) SwipeRefreshLayout swipeLayout;
+  @BindView(R.id.recycler_view) RecyclerView recyclerView;
+  @BindView(R.id.empty_view) View emptyView;
 
-  @BindDimen(R.dimen.app_bar_elevation) float mElevation;
+  @BindDimen(R.dimen.app_bar_elevation) float elevation;
 
-  private MessagesAdapter mAdapter;
-  private final PublishSubject<Boolean> mRefreshing = PublishSubject.create();
+  private MessagesAdapter adapter;
+  private final PublishSubject<Boolean> refreshing = PublishSubject.create();
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -61,29 +60,29 @@ public class MainActivity
     component(this).inject(this);
 
     setTitle(null);
-    setSupportActionBar(mToolbar);
+    setSupportActionBar(toolbar);
     updateColor(getResources().getColor(R.color.state_good));
 
-    mAppBarLayout.addOnOffsetChangedListener((layout, off) -> layout.setElevation(mElevation));
-    FontUtils.apply(mToolbarLayout, FontUtils.BOLD);
-    mSwipeLayout.setOnRefreshListener(this::onRefreshPulled);
+    appBarLayout.addOnOffsetChangedListener((layout, off) -> layout.setElevation(elevation));
+    FontUtils.apply(toolbarLayout, FontUtils.BOLD);
+    swipeLayout.setOnRefreshListener(this::onRefreshPulled);
 
-    mAdapter = new MessagesAdapter(this);
-    mRecyclerView.addItemDecoration(new SpaceDecoration(this, VERTICAL));
-    mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-    mRecyclerView.setAdapter(mAdapter);
+    adapter = new MessagesAdapter(this);
+    recyclerView.addItemDecoration(new SpaceDecoration(this, VERTICAL));
+    recyclerView.setLayoutManager(new LinearLayoutManager(this));
+    recyclerView.setAdapter(adapter);
 
-    setVisibility(mFabDev, BuildConfig.DEBUG);
-
-    unsubscribeOnDestroy(
-        mRefreshing.distinctUntilChanged()
-                   .debounce(refresh -> just(refresh).delay(refresh ? 1000L : 0L, MILLISECONDS))
-                   .observeOn(AndroidSchedulers.mainThread())
-                   .subscribe(mSwipeLayout::setRefreshing));
+    setVisibility(fabDev, BuildConfig.DEBUG);
 
     unsubscribeOnDestroy(
-        mDevSettingsDialog.onDevSettingsChanged()
-                          .subscribe(a -> refreshStatus()));
+        refreshing.distinctUntilChanged()
+                  .debounce(refresh -> just(refresh).delay(refresh ? 1000L : 0L, MILLISECONDS))
+                  .observeOn(AndroidSchedulers.mainThread())
+                  .subscribe(swipeLayout::setRefreshing));
+
+    unsubscribeOnDestroy(
+        devSettingsDialog.onDevSettingsChanged()
+                         .subscribe(a -> refreshStatus()));
 
     refreshStatus();
   }
@@ -95,12 +94,12 @@ public class MainActivity
 
   @OnClick(R.id.fab)
   public void onFabClicked() {
-    mPushNotificationDialog.show(this);
+    pushNotificationDialog.show(this);
   }
 
   @OnClick(R.id.fab_dev_settings)
   public void onDevFabClicked() {
-    mDevSettingsDialog.show(this);
+    devSettingsDialog.show(this);
   }
 
   public void onRefreshPulled() {
@@ -108,17 +107,17 @@ public class MainActivity
   }
 
   public void refreshStatus() {
-    mRefreshing.onNext(true);
+    refreshing.onNext(true);
 
-    unsubscribeOnDestroy(mAdapter.refreshStatus());
-    unsubscribeOnDestroy(mRunner.getStatus()
-                                .doFinally(() -> mRefreshing.onNext(false))
-                                .subscribe(this::onStatusReceived, this::onStatusFailed));
+    unsubscribeOnDestroy(adapter.refreshStatus());
+    unsubscribeOnDestroy(runner.getStatus()
+                               .doFinally(() -> refreshing.onNext(false))
+                               .subscribe(this::onStatusReceived, this::onStatusFailed));
   }
 
   void setListVisibility(final boolean isListVisible) {
-    setVisibility(mRecyclerView, isListVisible);
-    setVisibility(mEmptyView, !isListVisible);
+    setVisibility(recyclerView, isListVisible);
+    setVisibility(emptyView, !isListVisible);
   }
 
   void onStatusReceived(final Response response) {
@@ -126,14 +125,14 @@ public class MainActivity
     final State state = response.status().state();
     final int color = getResources().getColor(state.getColorResId());
 
-    mToolbarLayout.setTitle(getString(state.getTitleResId()).toUpperCase());
+    toolbarLayout.setTitle(getString(state.getTitleResId()).toUpperCase());
     updateColor(color);
   }
 
   private void updateColor(@ColorInt final int color) {
-    mToolbarLayout.setBackgroundColor(color);
-    mToolbarLayout.setContentScrimColor(color);
-    mToolbarLayout.setStatusBarScrimColor(color);
+    toolbarLayout.setBackgroundColor(color);
+    toolbarLayout.setContentScrimColor(color);
+    toolbarLayout.setStatusBarScrimColor(color);
     getWindow().setStatusBarColor(color);
 
     setTaskDescription(new ActivityManager.TaskDescription(

@@ -21,11 +21,11 @@ import io.reactivex.subjects.Subject;
 
 public class DevSettingsDialog {
 
-  @Inject @MockMode Preference<Boolean> mMockModePreference;
+  @Inject @MockMode Preference<Boolean> mockPreference;
 
-  @BindView(R.id.dev_mock_mode) SwitchCompat mMockSwitch;
+  @BindView(R.id.dev_mock_mode) SwitchCompat mockSwitch;
 
-  private final Subject<Unit> mUpdateObservable = PublishSubject.create();
+  private final Subject<Unit> changes = PublishSubject.create();
 
   @Inject
   public DevSettingsDialog() {
@@ -40,19 +40,19 @@ public class DevSettingsDialog {
 
     ButterKnife.bind(this, dialog);
 
-    mMockSwitch.setChecked(mMockModePreference.get());
+    mockSwitch.setChecked(mockPreference.get());
   }
 
   private void onDismissed() {
-    mUpdateObservable.onNext(Unit.INSTANCE);
+    changes.onNext(Unit.INSTANCE);
   }
 
   @OnCheckedChanged(R.id.dev_mock_mode)
   void onMockModeToggled(final boolean isChecked) {
-    mMockModePreference.set(isChecked);
+    mockPreference.set(isChecked);
   }
 
   public Observable<Unit> onDevSettingsChanged() {
-    return mUpdateObservable;
+    return changes;
   }
 }

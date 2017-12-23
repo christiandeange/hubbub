@@ -32,32 +32,32 @@ public enum State {
       R.string.state_error_description,
       R.color.state_error),;
 
-  @StringRes private final int mTitleResId;
-  @StringRes private final int mDescriptionResId;
-  @ColorRes private final int mColorResId;
+  @StringRes private final int titleResId;
+  @StringRes private final int descriptionResId;
+  @ColorRes private final int colorResId;
 
   State(
       @StringRes final int titleResId,
       @StringRes final int descriptionResId,
       @ColorRes final int colorResId) {
-    mTitleResId = titleResId;
-    mDescriptionResId = descriptionResId;
-    mColorResId = colorResId;
+    this.titleResId = titleResId;
+    this.descriptionResId = descriptionResId;
+    this.colorResId = colorResId;
   }
 
   @StringRes
   public int getTitleResId() {
-    return mTitleResId;
+    return titleResId;
   }
 
   @StringRes
   public int getDescriptionResId() {
-    return mDescriptionResId;
+    return descriptionResId;
   }
 
   @ColorRes
   public int getColorResId() {
-    return mColorResId;
+    return colorResId;
   }
 
   public int getWeight() {

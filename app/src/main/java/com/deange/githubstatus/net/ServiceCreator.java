@@ -11,35 +11,35 @@ import javax.inject.Provider;
 
 public class ServiceCreator {
 
-  private final Provider<Boolean> mMockMode;
+  private final Provider<Boolean> mockProvider;
 
   @Inject
-  public ServiceCreator(@MockMode final Provider<Boolean> mockMode) {
-    mMockMode = mockMode;
+  public ServiceCreator(@MockMode final Provider<Boolean> mockProvider) {
+    this.mockProvider = mockProvider;
   }
 
   public <T> T createService(T realService, T mockService, final Class<T> clazz) {
     return clazz.cast(Proxy.newProxyInstance(
         clazz.getClassLoader(),
         new Class[]{clazz},
-        new ServiceHandler<>(mMockMode, realService, mockService)));
+        new ServiceHandler<>(mockProvider, realService, mockService)));
   }
 
   private static final class ServiceHandler<T>
       implements
       InvocationHandler {
 
-    final Provider<Boolean> mMockMode;
-    final T mRealService;
-    final T mMockService;
+    final Provider<Boolean> mockMode;
+    final T realService;
+    final T mockService;
 
     public ServiceHandler(
         final Provider<Boolean> mockMode,
         final T realService,
         final T mockService) {
-      mMockMode = mockMode;
-      mRealService = realService;
-      mMockService = mockService;
+      this.mockMode = mockMode;
+      this.realService = realService;
+      this.mockService = mockService;
     }
 
     @Override
@@ -51,7 +51,7 @@ public class ServiceCreator {
     }
 
     private T service() {
-      return mMockMode.get() ? mMockService : mRealService;
+      return mockMode.get() ? mockService : realService;
     }
   }
 }

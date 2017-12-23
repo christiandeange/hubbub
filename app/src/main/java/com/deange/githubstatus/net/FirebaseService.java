@@ -23,7 +23,7 @@ public class FirebaseService
 
   public static final String ACTION_MESSAGE_RECEIVED = "hubbub.intent.action.message_received";
 
-  @Inject Gson mGson;
+  @Inject Gson gson;
 
   @Override
   public void onCreate() {
@@ -38,7 +38,7 @@ public class FirebaseService
       jsonObject.addProperty(entry.getKey(), entry.getValue());
     }
 
-    final Message message = mGson.fromJson(jsonObject, Message.class);
+    final Message message = gson.fromJson(jsonObject, Message.class);
 
     Log.d(TAG, "Message data = " + message);
 

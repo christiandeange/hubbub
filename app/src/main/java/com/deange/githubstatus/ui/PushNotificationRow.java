@@ -32,14 +32,14 @@ public class PushNotificationRow
 
   private static final int[] CHECKED_STATE_SET = {android.R.attr.state_checked};
 
-  @BindView(R.id.list_item_setting_dot_outline) View mDotOutline;
-  @BindView(R.id.list_item_setting_dot) View mDot;
-  @BindView(R.id.list_item_setting_title) CheckedTextView mTitle;
-  @BindView(R.id.list_item_setting_description) CheckedTextView mDescription;
+  @BindView(R.id.list_item_setting_dot_outline) View dotOutline;
+  @BindView(R.id.list_item_setting_dot) View dot;
+  @BindView(R.id.list_item_setting_title) CheckedTextView title;
+  @BindView(R.id.list_item_setting_description) CheckedTextView description;
 
-  private final ColorDrawable mColorDrawable;
-  private boolean mIsChecked;
-  private String mTopic;
+  private final ColorDrawable colorDrawable;
+  private boolean isChecked;
+  private String topic;
 
   public PushNotificationRow(@NonNull final Context context) {
     this(context, null);
@@ -74,9 +74,9 @@ public class PushNotificationRow
     // Set up the background drawable selector
     // Has to be done programmatically so we can mutate the color in setColor()
     setClickable(true);
-    mColorDrawable = new ColorDrawable(Color.TRANSPARENT);
+    colorDrawable = new ColorDrawable(Color.TRANSPARENT);
     final StateListDrawable states = new StateListDrawable();
-    states.addState(new int[]{android.R.attr.state_checked}, mColorDrawable);
+    states.addState(new int[]{android.R.attr.state_checked}, colorDrawable);
     states.addState(new int[]{}, getDrawable(R.attr.selectableItemBackground, context));
     setBackground(states);
 
@@ -97,13 +97,13 @@ public class PushNotificationRow
   }
 
   public void setColor(final int color) {
-    mDot.setBackgroundTintList(ColorStateList.valueOf(color));
-    mColorDrawable.setColor(color);
+    dot.setBackgroundTintList(ColorStateList.valueOf(color));
+    colorDrawable.setColor(color);
     invalidate();
   }
 
   public void setDotSize(final int dotSizePx) {
-    ViewGroup.LayoutParams lp = mDot.getLayoutParams();
+    ViewGroup.LayoutParams lp = dot.getLayoutParams();
     lp.width = dotSizePx;
     lp.height = dotSizePx;
 
@@ -112,21 +112,21 @@ public class PushNotificationRow
   }
 
   public void setTitle(final CharSequence title) {
-    mTitle.setText(title);
+    this.title.setText(title);
   }
 
   public void setDescription(final CharSequence description) {
-    mDescription.setText(description);
+    this.description.setText(description);
   }
 
   private void setTopic(String topic) {
     if (topic == null) topic = "";
-    mTopic = topic;
+    this.topic = topic;
   }
 
   @NonNull
   public String getTopic() {
-    return mTopic;
+    return topic;
   }
 
   @Override
@@ -146,20 +146,20 @@ public class PushNotificationRow
 
   @Override
   public void setChecked(final boolean isChecked) {
-    mIsChecked = isChecked;
+    this.isChecked = isChecked;
     refreshDrawableState();
 
-    mTitle.setChecked(isChecked);
-    mDescription.setChecked(isChecked);
+    title.setChecked(isChecked);
+    description.setChecked(isChecked);
   }
 
   @Override
   public boolean isChecked() {
-    return mIsChecked;
+    return isChecked;
   }
 
   @Override
   public void toggle() {
-    setChecked(!mIsChecked);
+    setChecked(!isChecked);
   }
 }

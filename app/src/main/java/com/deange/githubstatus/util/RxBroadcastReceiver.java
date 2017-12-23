@@ -16,14 +16,14 @@ public class RxBroadcastReceiver
     ObservableOnSubscribe<Intent>,
     Disposable {
 
-  private final Context mContext;
-  private final IntentFilter mFilter;
-  private Emitter<? super Intent> mEmitter;
+  private final Context context;
+  private final IntentFilter filter;
+  private Emitter<? super Intent> emitter;
 
-  private BroadcastReceiver mReceiver = new BroadcastReceiver() {
+  private BroadcastReceiver receiver = new BroadcastReceiver() {
     @Override
     public void onReceive(final Context context, final Intent intent) {
-      mEmitter.onNext(intent);
+      emitter.onNext(intent);
     }
   };
 
@@ -38,24 +38,24 @@ public class RxBroadcastReceiver
   }
 
   private RxBroadcastReceiver(final Context context, final IntentFilter filter) {
-    mContext = context.getApplicationContext();
-    mFilter = filter;
+    this.context = context.getApplicationContext();
+    this.filter = filter;
   }
 
   @Override
   public void subscribe(final ObservableEmitter<Intent> emitter) throws Exception {
-    mEmitter = emitter;
-    mContext.registerReceiver(mReceiver, mFilter);
+    this.emitter = emitter;
+    context.registerReceiver(receiver, filter);
   }
 
   @Override
   public void dispose() {
-    mContext.unregisterReceiver(mReceiver);
-    mReceiver = null;
+    context.unregisterReceiver(receiver);
+    receiver = null;
   }
 
   @Override
   public boolean isDisposed() {
-    return mReceiver == null;
+    return receiver == null;
   }
 }

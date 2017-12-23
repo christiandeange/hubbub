@@ -10,7 +10,7 @@ import dagger.internal.Preconditions;
 
 public class ViewGroupIterable implements Iterable<View> {
 
-  private final ViewGroup mParent;
+  private final ViewGroup parent;
 
   public static ViewGroupIterable on(final ViewGroup parent) {
     Preconditions.checkNotNull(parent, "parent == null");
@@ -18,34 +18,34 @@ public class ViewGroupIterable implements Iterable<View> {
   }
 
   private ViewGroupIterable(final ViewGroup parent) {
-    mParent = parent;
+    this.parent = parent;
   }
 
   @NonNull
   @Override
   public Iterator<View> iterator() {
-    return new ViewGroupIterator(mParent);
+    return new ViewGroupIterator(parent);
   }
 
   private static class ViewGroupIterator
       implements
       Iterator<View> {
 
-    private final ViewGroup mParent;
-    private int mIndex;
+    private final ViewGroup parent;
+    private int index;
 
     public ViewGroupIterator(final ViewGroup parent) {
-      mParent = parent;
+      this.parent = parent;
     }
 
     @Override
     public boolean hasNext() {
-      return mParent != null && mIndex < mParent.getChildCount();
+      return parent != null && index < parent.getChildCount();
     }
 
     @Override
     public View next() {
-      return mParent.getChildAt(mIndex++);
+      return parent.getChildAt(index++);
     }
   }
 

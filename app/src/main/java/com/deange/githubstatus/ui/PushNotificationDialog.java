@@ -17,12 +17,12 @@ import javax.inject.Inject;
 
 public class PushNotificationDialog {
 
-  private final Preference<String> mTopicPreference;
-  private final List<PushNotificationRow> mToggles = new ArrayList<>();
+  private final Preference<String> topicPreference;
+  private final List<PushNotificationRow> toggles = new ArrayList<>();
 
   @Inject
   public PushNotificationDialog(TopicController controller) {
-    mTopicPreference = controller.getPreference();
+    topicPreference = controller.getPreference();
   }
 
   public void show(final Context context) {
@@ -31,10 +31,10 @@ public class PushNotificationDialog {
         .show();
 
     // Unregister ourselves as listeners
-    for (final PushNotificationRow toggle : mToggles) {
+    for (final PushNotificationRow toggle : toggles) {
       toggle.setOnClickListener(null);
     }
-    mToggles.clear();
+    toggles.clear();
 
     final ViewGroup root = dialog.findViewById(R.id.push_notification_toggles_parent);
     for (final View view : ViewGroupIterable.on(root)) {
@@ -42,20 +42,20 @@ public class PushNotificationDialog {
         final PushNotificationRow row = (PushNotificationRow) view;
 
         row.setOnClickListener(this::onRowToggled);
-        if (row.getTopic().equals(mTopicPreference.get())) {
+        if (row.getTopic().equals(topicPreference.get())) {
           row.setChecked(true);
         }
 
-        mToggles.add(row);
+        toggles.add(row);
       }
     }
   }
 
   private void onRowToggled(final View view) {
     final PushNotificationRow rowClicked = (PushNotificationRow) view;
-    mTopicPreference.set(rowClicked.getTopic());
+    topicPreference.set(rowClicked.getTopic());
 
-    for (final PushNotificationRow row : mToggles) {
+    for (final PushNotificationRow row : toggles) {
       row.setChecked(row == rowClicked);
     }
   }

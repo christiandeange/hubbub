@@ -21,8 +21,8 @@ import static com.deange.githubstatus.MainApplication.component;
 public abstract class BaseActivity
     extends AppCompatActivity {
 
-  private final Handler mHandler = new Handler(Looper.getMainLooper());
-  private final CompositeDisposable mDisposables = new CompositeDisposable();
+  private final Handler handler = new Handler(Looper.getMainLooper());
+  private final CompositeDisposable disposables = new CompositeDisposable();
 
   @Override
   protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -55,24 +55,24 @@ public abstract class BaseActivity
 
   @Override
   protected void onDestroy() {
-    mDisposables.dispose();
+    disposables.dispose();
     super.onDestroy();
   }
 
   public void unsubscribeOnDestroy(final Disposable disposable) {
-    mDisposables.add(disposable);
+    disposables.add(disposable);
   }
 
   protected void post(final Runnable runnable) {
-    mHandler.post(runnable);
+    handler.post(runnable);
   }
 
   protected void postDelayed(final Runnable runnable, final long delayMillis) {
-    mHandler.postDelayed(runnable, delayMillis);
+    handler.postDelayed(runnable, delayMillis);
   }
 
   protected void removeCallbacks(final Runnable runnable) {
-    mHandler.removeCallbacks(runnable);
+    handler.removeCallbacks(runnable);
   }
 
   @LayoutRes
