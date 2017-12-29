@@ -17,9 +17,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class RetrofitModule {
 
   @Provides
-  public Retrofit providesRetrofit(
-      final Gson gson,
-      final OkHttpClient client) {
+  public static Retrofit providesRetrofit(Gson gson, OkHttpClient client) {
     return new Retrofit.Builder()
         .addConverterFactory(GsonConverterFactory.create(gson))
         .client(client)
@@ -29,11 +27,10 @@ public class RetrofitModule {
   }
 
   @Provides
-  public GithubStatusApi providesGithubStatusApi(
-      final Retrofit retrofit,
-      final ServiceCreator serviceCreator) {
+  public static GithubStatusApi providesGithubStatusApi(Retrofit retrofit, ServiceCreator serviceCreator) {
     return serviceCreator.createService(
-        retrofit.create(GithubStatusApi.class), new MockGithubStatusApi(),
+        retrofit.create(GithubStatusApi.class),
+        new MockGithubStatusApi(),
         GithubStatusApi.class);
   }
 

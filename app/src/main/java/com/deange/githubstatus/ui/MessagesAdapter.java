@@ -20,7 +20,6 @@ import com.deange.githubstatus.model.State;
 import com.deange.githubstatus.util.Formatter;
 import com.deange.githubstatus.util.SimpleDiffCallback;
 
-import java.util.Collections;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -30,6 +29,7 @@ import butterknife.ButterKnife;
 import io.reactivex.disposables.Disposable;
 
 import static com.deange.githubstatus.MainApplication.component;
+import static java.util.Collections.emptyList;
 
 public class MessagesAdapter
     extends RecyclerView.Adapter<MessagesAdapter.VH> {
@@ -38,9 +38,9 @@ public class MessagesAdapter
 
   private final Context context;
   private final LayoutInflater inflater;
-  @NonNull private List<Message> messages = Collections.emptyList();
+  @NonNull private List<Message> messages = emptyList();
 
-  public MessagesAdapter(final Context context) {
+  public MessagesAdapter(Context context) {
     this.context = context;
     inflater = LayoutInflater.from(context);
 
@@ -48,15 +48,15 @@ public class MessagesAdapter
   }
 
   @Override
-  public VH onCreateViewHolder(final ViewGroup parent, final int viewType) {
+  public VH onCreateViewHolder(ViewGroup parent, int viewType) {
     return new VH(inflater.inflate(R.layout.list_item_message, parent, false));
   }
 
   @Override
-  public void onBindViewHolder(final VH holder, final int position) {
-    final Message message = this.messages.get(position);
-    final State state = message.state();
-    final int color = ContextCompat.getColor(context, state.getColorResId());
+  public void onBindViewHolder(VH holder, int position) {
+    Message message = this.messages.get(position);
+    State state = message.state();
+    int color = ContextCompat.getColor(context, state.getColorResId());
 
     ((LinearLayout.LayoutParams) holder.mTitle.getLayoutParams()).weight = state.getWeight();
 
@@ -76,19 +76,19 @@ public class MessagesAdapter
     return runner.getStatus().subscribe(this::onResponseReceived, this::onResponseFailed);
   }
 
-  private void onResponseReceived(final Response response) {
+  private void onResponseReceived(Response response) {
     setMessages(response.messages());
   }
 
-  private void onResponseFailed(final Throwable throwable) {
-    setMessages(Collections.emptyList());
+  private void onResponseFailed(Throwable throwable) {
+    setMessages(emptyList());
   }
 
-  void setMessages(@NonNull final List<Message> messages) {
-    final List<Message> oldMessages = this.messages;
+  void setMessages(@NonNull List<Message> messages) {
+    List<Message> oldMessages = this.messages;
     this.messages = messages;
 
-    final DiffUtil.Callback callback = new SimpleDiffCallback<>(
+    DiffUtil.Callback callback = new SimpleDiffCallback<>(
         oldMessages, this.messages,
         (m1, m2) -> m1.id() == m2.id());
 
@@ -100,7 +100,7 @@ public class MessagesAdapter
     @BindView(R.id.message_body) TextView mBody;
     @BindView(R.id.message_date) TextView mDate;
 
-    public VH(final View root) {
+    public VH(View root) {
       super(root);
       ButterKnife.bind(this, root);
     }

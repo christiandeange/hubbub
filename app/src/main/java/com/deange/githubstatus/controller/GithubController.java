@@ -16,7 +16,7 @@ public class GithubController {
   private final GithubStatusApi api;
 
   @Inject
-  GithubController(final GithubStatusApi api) {
+  GithubController(GithubStatusApi api) {
     this.api = api;
   }
 

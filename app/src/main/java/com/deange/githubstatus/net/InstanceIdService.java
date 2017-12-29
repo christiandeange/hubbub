@@ -12,7 +12,7 @@ public class InstanceIdService
 
   @Override
   public void onTokenRefresh() {
-    final String refreshedToken = FirebaseInstanceId.getInstance().getToken();
+    String refreshedToken = FirebaseInstanceId.getInstance().getToken();
     Log.d(TAG, "Refreshed token: " + refreshedToken);
   }
 }

@@ -29,7 +29,7 @@ public abstract class BaseActivity
                        .subscribe(this::onTopicChanged));
   }
 
-  private void onTopicChanged(final String newTopic) {
+  private void onTopicChanged(String newTopic) {
     if (!newTopic.isEmpty()) {
       // If the user is attempting to subscribe to a push notification channel,
       // they'll need to have a valid Google Play Services version
@@ -48,7 +48,7 @@ public abstract class BaseActivity
     super.onDestroy();
   }
 
-  public void unsubscribeOnDestroy(final Disposable disposable) {
+  public void unsubscribeOnDestroy(Disposable disposable) {
     disposables.add(disposable);
   }
 }

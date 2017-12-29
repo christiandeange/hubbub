@@ -22,14 +22,12 @@ public class RxBroadcastReceiver
 
   private BroadcastReceiver receiver = new BroadcastReceiver() {
     @Override
-    public void onReceive(final Context context, final Intent intent) {
+    public void onReceive(Context context, Intent intent) {
       emitter.onNext(intent);
     }
   };
 
-  public static Observable<Intent> create(
-      final Context context,
-      final IntentFilter filter) {
+  public static Observable<Intent> create(Context context, IntentFilter filter) {
 
     // Need to create a different observable for each subscriber so that we
     // (un)register our broadcast receiver only once
@@ -37,13 +35,13 @@ public class RxBroadcastReceiver
         () -> Observable.create(new RxBroadcastReceiver(context, filter)));
   }
 
-  private RxBroadcastReceiver(final Context context, final IntentFilter filter) {
+  private RxBroadcastReceiver(Context context, IntentFilter filter) {
     this.context = context.getApplicationContext();
     this.filter = filter;
   }
 
   @Override
-  public void subscribe(final ObservableEmitter<Intent> emitter) throws Exception {
+  public void subscribe(ObservableEmitter<Intent> emitter) throws Exception {
     this.emitter = emitter;
     context.registerReceiver(receiver, filter);
   }

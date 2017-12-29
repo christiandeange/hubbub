@@ -13,25 +13,19 @@ public class SimpleDiffCallback<T>
   private final DiffComparator<T> idFunc;
   private final DiffComparator<T> eqFunc;
 
-  public SimpleDiffCallback(
-      final List<T> oldList,
-      final List<T> newList) {
+  public SimpleDiffCallback(List<T> oldList, List<T> newList) {
     this(oldList, newList, (o1, o2) -> o1.hashCode() == o1.hashCode());
   }
 
-  public SimpleDiffCallback(
-      final List<T> oldList,
-      final List<T> newList,
-      final DiffComparator<T> idFunction) {
+  public SimpleDiffCallback(List<T> oldList, List<T> newList, DiffComparator<T> idFunction) {
     this(oldList, newList, idFunction, Objects::equals);
   }
 
   public SimpleDiffCallback(
-      final List<T> oldList,
-      final List<T> newList,
-      final DiffComparator<T> idFunction,
-      final DiffComparator<T> equalsFunction) {
-
+      List<T> oldList,
+      List<T> newList,
+      DiffComparator<T> idFunction,
+      DiffComparator<T> equalsFunction) {
     this.oldList = oldList;
     this.newList = newList;
     idFunc = idFunction;
@@ -49,16 +43,19 @@ public class SimpleDiffCallback<T>
   }
 
   @Override
-  public boolean areItemsTheSame(final int oldItemPosition, final int newItemPosition) {
+  public boolean areItemsTheSame(int oldItemPosition, int newItemPosition) {
     return idFunc.test(oldList.get(oldItemPosition), newList.get(newItemPosition));
   }
 
   @Override
-  public boolean areContentsTheSame(final int oldItemPosition, final int newItemPosition) {
+  public boolean areContentsTheSame(int oldItemPosition, int newItemPosition) {
     return eqFunc.test(oldList.get(oldItemPosition), newList.get(newItemPosition));
   }
 
   public interface DiffComparator<T> {
-    boolean test(final T obj1, final T obj2);
+    /**
+     * Returns true if both objects are "equal", in whatever context that applies
+     */
+    boolean test(T obj1, T obj2);
   }
 }

@@ -41,28 +41,26 @@ public class PushNotificationRow
   private boolean isChecked;
   private String topic;
 
-  public PushNotificationRow(@NonNull final Context context) {
+  public PushNotificationRow(@NonNull Context context) {
     this(context, null);
   }
 
-  public PushNotificationRow(
-      @NonNull final Context context,
-      @Nullable final AttributeSet attrs) {
+  public PushNotificationRow(@NonNull Context context, @Nullable AttributeSet attrs) {
     this(context, attrs, 0);
   }
 
   public PushNotificationRow(
-      @NonNull final Context context,
-      @Nullable final AttributeSet attrs,
-      final int defStyleAttr) {
+      @NonNull Context context,
+      @Nullable AttributeSet attrs,
+      int defStyleAttr) {
     this(context, attrs, defStyleAttr, 0);
   }
 
   public PushNotificationRow(
-      @NonNull final Context context,
-      @Nullable final AttributeSet attrs,
-      final int defStyleAttr,
-      final int defStyleRes) {
+      @NonNull Context context,
+      @Nullable AttributeSet attrs,
+      int defStyleAttr,
+      int defStyleRes) {
     super(context, attrs, defStyleAttr, defStyleRes);
 
     setOrientation(HORIZONTAL);
@@ -75,12 +73,12 @@ public class PushNotificationRow
     // Has to be done programmatically so we can mutate the color in setColor()
     setClickable(true);
     colorDrawable = new ColorDrawable(Color.TRANSPARENT);
-    final StateListDrawable states = new StateListDrawable();
+    StateListDrawable states = new StateListDrawable();
     states.addState(new int[]{android.R.attr.state_checked}, colorDrawable);
     states.addState(new int[]{}, getDrawable(R.attr.selectableItemBackground, context));
     setBackground(states);
 
-    final TypedArray a = context.obtainStyledAttributes(
+    TypedArray a = context.obtainStyledAttributes(
         attrs, R.styleable.PushNotificationRow, defStyleAttr, defStyleRes);
 
     if (a != null) {
@@ -96,13 +94,13 @@ public class PushNotificationRow
     }
   }
 
-  public void setColor(final int color) {
+  public void setColor(int color) {
     dot.setBackgroundTintList(ColorStateList.valueOf(color));
     colorDrawable.setColor(color);
     invalidate();
   }
 
-  public void setDotSize(final int dotSizePx) {
+  public void setDotSize(int dotSizePx) {
     ViewGroup.LayoutParams lp = dot.getLayoutParams();
     lp.width = dotSizePx;
     lp.height = dotSizePx;
@@ -111,11 +109,11 @@ public class PushNotificationRow
     invalidate();
   }
 
-  public void setTitle(final CharSequence title) {
+  public void setTitle(CharSequence title) {
     this.title.setText(title);
   }
 
-  public void setDescription(final CharSequence description) {
+  public void setDescription(CharSequence description) {
     this.description.setText(description);
   }
 
@@ -137,7 +135,7 @@ public class PushNotificationRow
 
   @Override
   public int[] onCreateDrawableState(int extraSpace) {
-    final int[] drawableState = super.onCreateDrawableState(extraSpace + 1);
+    int[] drawableState = super.onCreateDrawableState(extraSpace + 1);
     if (isChecked()) {
       mergeDrawableStates(drawableState, CHECKED_STATE_SET);
     }
@@ -145,7 +143,7 @@ public class PushNotificationRow
   }
 
   @Override
-  public void setChecked(final boolean isChecked) {
+  public void setChecked(boolean isChecked) {
     this.isChecked = isChecked;
     refreshDrawableState();
 

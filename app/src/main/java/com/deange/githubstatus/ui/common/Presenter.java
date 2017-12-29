@@ -38,7 +38,7 @@ public abstract class Presenter<V> {
     }
   }
 
-  protected final void unsubscribeOnUnload(@NonNull final Disposable disposable) {
+  protected final void unsubscribeOnUnload(@NonNull Disposable disposable) {
     disposables.add(disposable);
   }
 

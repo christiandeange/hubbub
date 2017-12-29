@@ -25,21 +25,21 @@ public class PushNotificationDialog {
     topicPreference = controller.getPreference();
   }
 
-  public void show(final Context context) {
-    final AlertDialog dialog = new AlertDialog.Builder(context)
+  public void show(Context context) {
+    AlertDialog dialog = new AlertDialog.Builder(context)
         .setView(R.layout.content_push_notification_settings)
         .show();
 
     // Unregister ourselves as listeners
-    for (final PushNotificationRow toggle : toggles) {
+    for (PushNotificationRow toggle : toggles) {
       toggle.setOnClickListener(null);
     }
     toggles.clear();
 
-    final ViewGroup root = dialog.findViewById(R.id.push_notification_toggles_parent);
-    for (final View view : ViewGroupIterable.on(root)) {
+    ViewGroup root = dialog.findViewById(R.id.push_notification_toggles_parent);
+    for (View view : ViewGroupIterable.childrenOf(root)) {
       if (view instanceof PushNotificationRow) {
-        final PushNotificationRow row = (PushNotificationRow) view;
+        PushNotificationRow row = (PushNotificationRow) view;
 
         row.setOnClickListener(this::onRowToggled);
         if (row.getTopic().equals(topicPreference.get())) {
@@ -51,11 +51,11 @@ public class PushNotificationDialog {
     }
   }
 
-  private void onRowToggled(final View view) {
-    final PushNotificationRow rowClicked = (PushNotificationRow) view;
+  private void onRowToggled(View view) {
+    PushNotificationRow rowClicked = (PushNotificationRow) view;
     topicPreference.set(rowClicked.getTopic());
 
-    for (final PushNotificationRow row : toggles) {
+    for (PushNotificationRow row : toggles) {
       row.setChecked(row == rowClicked);
     }
   }

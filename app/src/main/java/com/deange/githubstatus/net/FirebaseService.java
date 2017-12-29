@@ -32,34 +32,34 @@ public class FirebaseService
   }
 
   @Override
-  public void onMessageReceived(final RemoteMessage remoteMessage) {
-    final JsonObject jsonObject = new JsonObject();
-    for (final Map.Entry<String, String> entry : remoteMessage.getData().entrySet()) {
+  public void onMessageReceived(RemoteMessage remoteMessage) {
+    JsonObject jsonObject = new JsonObject();
+    for (Map.Entry<String, String> entry : remoteMessage.getData().entrySet()) {
       jsonObject.addProperty(entry.getKey(), entry.getValue());
     }
 
-    final Message message = gson.fromJson(jsonObject, Message.class);
+    Message message = gson.fromJson(jsonObject, Message.class);
 
     Log.d(TAG, "Message data = " + message);
 
-    final Intent intent = new Intent(ACTION_MESSAGE_RECEIVED);
+    Intent intent = new Intent(ACTION_MESSAGE_RECEIVED);
     intent.putExtra(KEY_MESSAGE, message);
     sendBroadcast(intent);
   }
 
   @Override
-  public void onMessageSent(final String msgId) {
+  public void onMessageSent(String msgId) {
   }
 
   @Override
-  public void onSendError(final String msgId, final Exception exception) {
+  public void onSendError(String msgId, Exception exception) {
   }
 
   @Override
   public void onDeletedMessages() {
   }
 
-  public static Message getMessageFromIntent(final Intent intent) {
+  public static Message getMessageFromIntent(Intent intent) {
     return intent.getParcelableExtra(KEY_MESSAGE);
   }
 

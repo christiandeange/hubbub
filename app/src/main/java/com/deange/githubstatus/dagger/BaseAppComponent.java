@@ -16,9 +16,9 @@ public interface BaseAppComponent {
   NotificationController notificationController();
 
   // Injection sites
-  void inject(final MainApplication target);
-  void inject(final MainActivity target);
-  void inject(final FirebaseService target);
-  void inject(final DevSettingsDialog target);
-  void inject(final MessagesAdapter target);
+  void inject(MainApplication target);
+  void inject(MainActivity target);
+  void inject(FirebaseService target);
+  void inject(DevSettingsDialog target);
+  void inject(MessagesAdapter target);
 }

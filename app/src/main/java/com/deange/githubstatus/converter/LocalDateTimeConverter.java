@@ -16,12 +16,12 @@ class LocalDateTimeConverter
   private static final DateTimeFormatter ISO_FORMAT = ISODateTimeFormat.dateTimeParser();
 
   @Override
-  public void write(final JsonWriter out, final LocalDateTime value) throws IOException {
+  public void write(JsonWriter out, LocalDateTime value) throws IOException {
     out.value(value.toDateTime().toString(ISO_FORMAT));
   }
 
   @Override
-  public LocalDateTime read(final JsonReader in) throws IOException {
+  public LocalDateTime read(JsonReader in) throws IOException {
     return ISO_FORMAT.parseDateTime(in.nextString()).toLocalDateTime();
   }
 }

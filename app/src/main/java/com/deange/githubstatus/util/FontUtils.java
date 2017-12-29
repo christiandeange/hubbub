@@ -16,6 +16,8 @@ import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
 import uk.co.chrisjenx.calligraphy.HasTypeface;
 import uk.co.chrisjenx.calligraphy.TypefaceUtils;
 
+import static com.deange.githubstatus.util.ViewGroupIterable.childrenOf;
+
 
 public final class FontUtils {
 
@@ -37,7 +39,7 @@ public final class FontUtils {
     throw new AssertionError();
   }
 
-  public static void init(final Context context) {
+  public static void init(Context context) {
     sAssets = context.getResources().getAssets();
 
     FONTS.put(THIN, context.getString(R.string.font_thin));
@@ -56,18 +58,18 @@ public final class FontUtils {
             .build());
   }
 
-  public static void apply(final View view, final @Font int type) {
+  public static void apply(View view, @Font int type) {
     apply(view, getFont(type));
   }
 
   public static void apply(
-      final View view,
-      final Typeface typeface) {
+      View view,
+      Typeface typeface) {
     if (view instanceof TextView) {
       ((TextView) view).setTypeface(typeface);
 
     } else if (view instanceof CollapsingToolbarLayout) {
-      final CollapsingToolbarLayout layout = (CollapsingToolbarLayout) view;
+      CollapsingToolbarLayout layout = (CollapsingToolbarLayout) view;
       layout.setExpandedTitleTypeface(typeface);
       layout.setCollapsedTitleTypeface(typeface);
 
@@ -76,14 +78,14 @@ public final class FontUtils {
     }
 
     if (view instanceof ViewGroup) {
-      for (final View child : ViewGroupIterable.on((ViewGroup) view)) {
+      for (View child : childrenOf((ViewGroup) view)) {
         apply(child, typeface);
       }
     }
   }
 
-  public static Typeface getFont(final @Font int font) {
-    final String fontPath = FONTS.get(font);
+  public static Typeface getFont(@Font int font) {
+    String fontPath = FONTS.get(font);
     return TypefaceUtils.load(sAssets, fontPath);
   }
 

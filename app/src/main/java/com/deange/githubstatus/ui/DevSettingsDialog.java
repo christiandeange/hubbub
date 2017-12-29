@@ -31,8 +31,8 @@ public class DevSettingsDialog {
   public DevSettingsDialog() {
   }
 
-  public void show(@NonNull final Context context) {
-    final AlertDialog dialog = new AlertDialog.Builder(context)
+  public void show(@NonNull Context context) {
+    AlertDialog dialog = new AlertDialog.Builder(context)
         .setView(R.layout.dev_settings)
         .setOnDismissListener(d -> onDismissed())
         .setPositiveButton(android.R.string.ok, null)
@@ -48,7 +48,7 @@ public class DevSettingsDialog {
   }
 
   @OnCheckedChanged(R.id.dev_mock_mode)
-  void onMockModeToggled(final boolean isChecked) {
+  void onMockModeToggled(boolean isChecked) {
     mockPreference.set(isChecked);
   }
 

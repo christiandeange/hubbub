@@ -9,39 +9,39 @@ import android.view.View;
 import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
 
-public final class ViewUtils {
+public class ViewUtils {
 
   private ViewUtils() {
     throw new AssertionError();
   }
 
-  public static void setVisibility(final View view, final boolean visible) {
+  public static void setVisibility(View view, boolean visible) {
     view.setVisibility(visible ? VISIBLE : GONE);
   }
 
-  public static int getAttrIdValue(@AttrRes final int attr, final Context context) {
-    final TypedValue value = new TypedValue();
+  public static int getAttrIdValue(@AttrRes int attr, Context context) {
+    TypedValue value = new TypedValue();
     context.getTheme().resolveAttribute(attr, value, true);
     return value.resourceId;
   }
 
-  public static Drawable getDrawable(@AttrRes final int attr, final Context context) {
+  public static Drawable getDrawable(@AttrRes int attr, Context context) {
     return context.getDrawable(getAttrIdValue(attr, context));
   }
 
-  public static String getString(@AttrRes final int attr, final Context context) {
+  public static String getString(@AttrRes int attr, Context context) {
     return context.getString(getAttrIdValue(attr, context));
   }
 
-  public static int getInteger(@AttrRes final int attr, final Context context) {
+  public static int getInteger(@AttrRes int attr, Context context) {
     return context.getResources().getInteger(getAttrIdValue(attr, context));
   }
 
-  public static boolean getBoolean(@AttrRes final int attr, final Context context) {
+  public static boolean getBoolean(@AttrRes int attr, Context context) {
     return context.getResources().getBoolean(getAttrIdValue(attr, context));
   }
 
-  public static int getColor(@AttrRes final int attr, final Context context) {
+  public static int getColor(@AttrRes int attr, Context context) {
     return context.getResources().getColor(getAttrIdValue(attr, context));
   }
 

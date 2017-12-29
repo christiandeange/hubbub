@@ -23,7 +23,7 @@ public class TopicController {
 
   @SuppressLint("CheckResult")
   @Inject
-  public TopicController(final RxSharedPreferences preferences) {
+  public TopicController(RxSharedPreferences preferences) {
     firebase = FirebaseMessaging.getInstance();
     topicPreference = preferences.getString("topic");
     getTopicChanges().subscribe(this::onTopicSubscriptionChanged);
@@ -43,7 +43,7 @@ public class TopicController {
                           .skip(2); // Skips initial seed and first automatic emission
   }
 
-  private void onTopicSubscriptionChanged(final TopicChange change) {
+  private void onTopicSubscriptionChanged(TopicChange change) {
     Log.d(TAG, "Topic changed --> " + change);
 
     if (!change.oldTopic().isEmpty()) {

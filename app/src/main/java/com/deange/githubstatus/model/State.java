@@ -37,9 +37,9 @@ public enum State {
   @ColorRes private final int colorResId;
 
   State(
-      @StringRes final int titleResId,
-      @StringRes final int descriptionResId,
-      @ColorRes final int colorResId) {
+      @StringRes int titleResId,
+      @StringRes int descriptionResId,
+      @ColorRes int colorResId) {
     this.titleResId = titleResId;
     this.descriptionResId = descriptionResId;
     this.colorResId = colorResId;

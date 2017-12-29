@@ -15,15 +15,14 @@ public class SpaceDecoration
 
   public static final int HORIZONTAL = LinearLayout.HORIZONTAL;
   public static final int VERTICAL = LinearLayout.VERTICAL;
-
   private static final String TAG = "SpaceDecoration";
   private static final int[] ATTRS = new int[]{android.R.attr.dividerHeight};
 
   private int dividerSize;
   private int orientation;
 
-  public SpaceDecoration(final Context context, @Orientation final int orientation) {
-    final TypedArray a = context.obtainStyledAttributes(ATTRS);
+  public SpaceDecoration(Context context, @Orientation int orientation) {
+    TypedArray a = context.obtainStyledAttributes(ATTRS);
 
     if (a.hasValue(0)) {
       dividerSize = a.getDimensionPixelSize(0, 0);
@@ -37,7 +36,7 @@ public class SpaceDecoration
     setOrientation(orientation);
   }
 
-  public void setOrientation(@Orientation final int orientation) {
+  public void setOrientation(@Orientation int orientation) {
     if (orientation != HORIZONTAL && orientation != VERTICAL) {
       throw new IllegalArgumentException(
           "Invalid orientation. It should be either HORIZONTAL or VERTICAL");
@@ -46,21 +45,19 @@ public class SpaceDecoration
   }
 
   @Override
-  public void onDraw(
-      final Canvas canvas,
-      final RecyclerView parent,
-      final RecyclerView.State state) {
+  public void onDraw(Canvas canvas, RecyclerView parent, RecyclerView.State state) {
+    // No-op
   }
 
   @Override
   public void getItemOffsets(
-      final Rect outRect,
-      final View view,
-      final RecyclerView parent,
-      final RecyclerView.State state) {
+      Rect outRect,
+      View view,
+      RecyclerView parent,
+      RecyclerView.State state) {
 
-    final int position = parent.getChildAdapterPosition(view);
-    final int firstPositionSize = (position == 0) ? dividerSize : 0;
+    int position = parent.getChildAdapterPosition(view);
+    int firstPositionSize = (position == 0) ? dividerSize : 0;
 
     if (dividerSize == 0) {
       outRect.set(0, 0, 0, 0);

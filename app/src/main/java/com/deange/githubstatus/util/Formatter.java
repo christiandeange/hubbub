@@ -26,7 +26,7 @@ public final class Formatter {
     throw new AssertionError();
   }
 
-  public static String formatLocalDateTime(final LocalDateTime date) {
+  public static String formatLocalDateTime(LocalDateTime date) {
     // For events on today, print only the time
     if (date.toLocalDate().equals(LocalDate.now())) {
       return FORMATTER_HM.print(date);

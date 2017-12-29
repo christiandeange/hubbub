@@ -12,11 +12,11 @@ public class AppModule {
 
   private final Application application;
 
-  public static AppModule create(final Application application) {
+  public static AppModule create(Application application) {
     return new AppModule(application);
   }
 
-  private AppModule(final Application application) {
+  private AppModule(Application application) {
     this.application = application;
   }
 

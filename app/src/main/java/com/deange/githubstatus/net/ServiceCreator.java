@@ -18,7 +18,7 @@ public class ServiceCreator {
     this.mockProvider = mockProvider;
   }
 
-  public <T> T createService(T realService, T mockService, final Class<T> clazz) {
+  public <T> T createService(T realService, T mockService, Class<T> clazz) {
     return clazz.cast(Proxy.newProxyInstance(
         clazz.getClassLoader(),
         new Class[]{clazz},
@@ -33,20 +33,14 @@ public class ServiceCreator {
     final T realService;
     final T mockService;
 
-    public ServiceHandler(
-        final Provider<Boolean> mockMode,
-        final T realService,
-        final T mockService) {
+    public ServiceHandler(Provider<Boolean> mockMode, T realService, T mockService) {
       this.mockMode = mockMode;
       this.realService = realService;
       this.mockService = mockService;
     }
 
     @Override
-    public Object invoke(
-        final Object proxy,
-        final Method method,
-        final Object[] args) throws Throwable {
+    public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
       return method.invoke(service(), args);
     }
 

@@ -16,7 +16,7 @@ public abstract class CurrentStatus
     implements
     Parcelable {
 
-  public static CurrentStatus create(final State state, final LocalDateTime time) {
+  public static CurrentStatus create(State state, LocalDateTime time) {
     return new AutoValue_CurrentStatus(state, time);
   }
 
@@ -35,7 +35,7 @@ public abstract class CurrentStatus
     return updatedAt().toDate().getTime();
   }
 
-  public static TypeAdapter<CurrentStatus> typeAdapter(final Gson gson) {
+  public static TypeAdapter<CurrentStatus> typeAdapter(Gson gson) {
     return new AutoValue_CurrentStatus.GsonTypeAdapter(gson);
   }
 

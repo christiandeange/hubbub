@@ -6,18 +6,18 @@ import android.view.ViewGroup;
 
 import java.util.Iterator;
 
-import dagger.internal.Preconditions;
+import static dagger.internal.Preconditions.checkNotNull;
 
 public class ViewGroupIterable implements Iterable<View> {
 
   private final ViewGroup parent;
 
-  public static ViewGroupIterable on(final ViewGroup parent) {
-    Preconditions.checkNotNull(parent, "parent == null");
+  public static ViewGroupIterable childrenOf(ViewGroup parent) {
+    checkNotNull(parent, "parent == null");
     return new ViewGroupIterable(parent);
   }
 
-  private ViewGroupIterable(final ViewGroup parent) {
+  private ViewGroupIterable(ViewGroup parent) {
     this.parent = parent;
   }
 
@@ -34,7 +34,7 @@ public class ViewGroupIterable implements Iterable<View> {
     private final ViewGroup parent;
     private int index;
 
-    public ViewGroupIterator(final ViewGroup parent) {
+    public ViewGroupIterator(ViewGroup parent) {
       this.parent = parent;
     }
 

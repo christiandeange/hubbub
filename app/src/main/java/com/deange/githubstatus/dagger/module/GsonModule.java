@@ -16,7 +16,7 @@ public class GsonModule {
 
   @Provides
   @Singleton
-  public Gson providesGson() {
+  public static Gson providesGson() {
     return new GsonBuilder()
         .registerTypeAdapterFactory(ModelGsonFactory.create())
         .registerTypeAdapterFactory(new LocalDateTimeConverterFactory())

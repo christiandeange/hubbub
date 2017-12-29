@@ -17,25 +17,25 @@ public class SharedPrefsModule {
 
   @Provides
   @Singleton
-  public SharedPreferences providesSharedPreferences(final Context context) {
+  public static SharedPreferences providesSharedPreferences(Context context) {
     return context.getSharedPreferences("default", Context.MODE_PRIVATE);
   }
 
   @Provides
   @Singleton
-  public RxSharedPreferences providesRxSharedPreferences(final SharedPreferences sharedPrefs) {
+  public static RxSharedPreferences providesRxSharedPreferences(SharedPreferences sharedPrefs) {
     return RxSharedPreferences.create(sharedPrefs);
   }
 
   @Provides
   @MockMode
-  public Preference<Boolean> providesMockModePreference(final RxSharedPreferences preferences) {
+  public static Preference<Boolean> providesMockModePreference(RxSharedPreferences preferences) {
     return preferences.getBoolean("mock_mode");
   }
 
   @Provides
   @MockMode
-  public boolean providesMockModeEnabled(@MockMode final Preference<Boolean> preference) {
+  public static boolean providesMockModeEnabled(@MockMode Preference<Boolean> preference) {
     return preference.get();
   }
 

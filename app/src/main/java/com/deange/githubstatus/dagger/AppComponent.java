@@ -24,8 +24,7 @@ public interface AppComponent
 
   @Component.Builder
   interface Builder {
-    Builder appModule(final AppModule appModule);
-
+    Builder appModule(AppModule appModule);
     AppComponent build();
   }
 

@@ -19,7 +19,7 @@ public class MainApplication
 
   private BaseAppComponent appComponent;
 
-  public static MainApplication get(final Context context) {
+  public static MainApplication get(Context context) {
     return (MainApplication) context.getApplicationContext();
   }
 
@@ -43,7 +43,7 @@ public class MainApplication
                              .build();
   }
 
-  public static <T extends BaseAppComponent> T component(final Context context) {
+  public static <T extends BaseAppComponent> T component(Context context) {
     //noinspection unchecked
     return (T) ((MainApplication) context.getApplicationContext()).appComponent;
   }

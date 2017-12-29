@@ -19,11 +19,11 @@ public abstract class Message
     implements
     Parcelable {
 
-  public static Message create(final State state, final String body, final LocalDateTime time) {
+  public static Message create(State state, String body, LocalDateTime time) {
     return new AutoValue_Message(state, body, time);
   }
 
-  public static Message error(final Throwable throwable) {
+  public static Message error(Throwable throwable) {
     return new AutoValue_Message(ERROR, throwable.getLocalizedMessage(), LocalDateTime.now());
   }
 
@@ -42,7 +42,7 @@ public abstract class Message
     return createdOn().toDate().getTime();
   }
 
-  public String bodyForNotification(final Context context) {
+  public String bodyForNotification(Context context) {
     String body = body();
 
     if (body == null) {
@@ -52,7 +52,7 @@ public abstract class Message
     return body;
   }
 
-  public static TypeAdapter<Message> typeAdapter(final Gson gson) {
+  public static TypeAdapter<Message> typeAdapter(Gson gson) {
     return new AutoValue_Message.GsonTypeAdapter(gson);
   }
 }

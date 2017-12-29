@@ -123,27 +123,27 @@ public class MainPresenter extends Presenter<View> {
                               .subscribe(this::onStatusReceived, this::onStatusFailed));
   }
 
-  private void onStatusReceived(final Response response) {
+  private void onStatusReceived(Response response) {
     Resources res = getView().getResources();
     setListVisibility(!response.messages().isEmpty());
-    final State state = response.status().state();
-    final int color = res.getColor(state.getColorResId());
+    State state = response.status().state();
+    int color = res.getColor(state.getColorResId());
 
     toolbarLayout.setTitle(res.getString(state.getTitleResId()).toUpperCase());
     updateColor(color);
   }
 
-  private void onStatusFailed(final Throwable error) {
+  private void onStatusFailed(Throwable error) {
     setListVisibility(true);
     error.printStackTrace();
   }
 
-  private void setListVisibility(final boolean isListVisible) {
+  private void setListVisibility(boolean isListVisible) {
     setVisibility(recyclerView, isListVisible);
     setVisibility(emptyView, !isListVisible);
   }
 
-  private void updateColor(@ColorInt final int color) {
+  private void updateColor(@ColorInt int color) {
     toolbarLayout.setBackgroundColor(color);
     toolbarLayout.setContentScrimColor(color);
     toolbarLayout.setStatusBarScrimColor(color);
