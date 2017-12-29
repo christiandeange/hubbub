@@ -1,5 +1,6 @@
 package com.deange.githubstatus.controller;
 
+import android.annotation.SuppressLint;
 import android.util.Log;
 
 import com.deange.githubstatus.model.TopicChange;
@@ -20,6 +21,7 @@ public class TopicController {
   private final FirebaseMessaging firebase;
   private final Preference<String> topicPreference;
 
+  @SuppressLint("CheckResult")
   @Inject
   public TopicController(final RxSharedPreferences preferences) {
     firebase = FirebaseMessaging.getInstance();

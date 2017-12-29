@@ -1,16 +1,12 @@
-package com.deange.githubstatus.ui;
+package com.deange.githubstatus.ui.common;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
-import android.support.annotation.LayoutRes;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 
 import com.google.android.gms.common.GoogleApiAvailability;
 
-import butterknife.ButterKnife;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
@@ -21,18 +17,11 @@ import static com.deange.githubstatus.MainApplication.component;
 public abstract class BaseActivity
     extends AppCompatActivity {
 
-  private final Handler handler = new Handler(Looper.getMainLooper());
   private final CompositeDisposable disposables = new CompositeDisposable();
 
   @Override
   protected void onCreate(@Nullable Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-
-    final int layoutId = getLayoutId();
-    if (layoutId != 0) {
-      setContentView(layoutId);
-      ButterKnife.bind(this);
-    }
 
     unsubscribeOnDestroy(
         component(this).topicController()
@@ -43,7 +32,7 @@ public abstract class BaseActivity
   private void onTopicChanged(final String newTopic) {
     if (!newTopic.isEmpty()) {
       // If the user is attempting to subscribe to a push notification channel,
-      // they'll need to have a isInvalid Google Play Services version
+      // they'll need to have a valid Google Play Services version
       GoogleApiAvailability.getInstance().makeGooglePlayServicesAvailable(this);
     }
   }
@@ -62,19 +51,4 @@ public abstract class BaseActivity
   public void unsubscribeOnDestroy(final Disposable disposable) {
     disposables.add(disposable);
   }
-
-  protected void post(final Runnable runnable) {
-    handler.post(runnable);
-  }
-
-  protected void postDelayed(final Runnable runnable, final long delayMillis) {
-    handler.postDelayed(runnable, delayMillis);
-  }
-
-  protected void removeCallbacks(final Runnable runnable) {
-    handler.removeCallbacks(runnable);
-  }
-
-  @LayoutRes
-  public abstract int getLayoutId();
 }

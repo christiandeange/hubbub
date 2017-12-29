@@ -1,4 +1,4 @@
-package com.deange.githubstatus.ui;
+package com.deange.githubstatus.ui.common;
 
 import android.content.Context;
 import android.content.res.TypedArray;

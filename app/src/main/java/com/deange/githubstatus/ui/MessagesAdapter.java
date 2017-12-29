@@ -13,6 +13,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.deange.githubstatus.R;
+import com.deange.githubstatus.controller.GithubController;
 import com.deange.githubstatus.model.Message;
 import com.deange.githubstatus.model.Response;
 import com.deange.githubstatus.model.State;
@@ -33,7 +34,7 @@ import static com.deange.githubstatus.MainApplication.component;
 public class MessagesAdapter
     extends RecyclerView.Adapter<MessagesAdapter.VH> {
 
-  @Inject GithubRunner runner;
+  @Inject GithubController runner;
 
   private final Context context;
   private final LayoutInflater inflater;

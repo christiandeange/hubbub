@@ -1,5 +1,6 @@
 package com.deange.githubstatus.controller;
 
+import android.annotation.SuppressLint;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -55,6 +56,7 @@ public class NotificationController {
     }
   }
 
+  @SuppressLint("CheckResult")
   private void doRegister() {
     ensureNotificationChannels();
 

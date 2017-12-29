@@ -1,4 +1,4 @@
-package com.deange.githubstatus.ui;
+package com.deange.githubstatus.controller;
 
 import com.deange.githubstatus.model.Response;
 import com.deange.githubstatus.net.GithubStatusApi;
@@ -11,12 +11,12 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 
 @Singleton
-public class GithubRunner {
+public class GithubController {
 
   private final GithubStatusApi api;
 
   @Inject
-  GithubRunner(final GithubStatusApi api) {
+  GithubController(final GithubStatusApi api) {
     this.api = api;
   }
 
