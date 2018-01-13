@@ -129,7 +129,7 @@ public class MainPresenter extends Presenter<View> {
     State state = response.status().state();
     int color = res.getColor(state.getColorResId());
 
-    toolbarLayout.setTitle(res.getString(state.getTitleResId()).toUpperCase());
+    toolbarLayout.setTitle(res.getString(state.getStateResId()).toUpperCase());
     updateColor(color);
   }
 
