@@ -21,14 +21,15 @@ import io.reactivex.subjects.Subject;
 
 public class DevSettingsDialog {
 
-  @Inject @MockMode Preference<Boolean> mockPreference;
+  @MockMode private final Preference<Boolean> mockPreference;
 
   @BindView(R.id.dev_mock_mode) SwitchCompat mockSwitch;
 
   private final Subject<Unit> changes = PublishSubject.create();
 
   @Inject
-  public DevSettingsDialog() {
+  public DevSettingsDialog(@MockMode Preference<Boolean> mockPreference) {
+    this.mockPreference = mockPreference;
   }
 
   public void show(@NonNull Context context) {

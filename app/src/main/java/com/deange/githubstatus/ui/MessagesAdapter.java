@@ -58,12 +58,14 @@ public class MessagesAdapter
     State state = message.state();
     int color = ContextCompat.getColor(context, state.getColorResId());
 
-    ((LinearLayout.LayoutParams) holder.mTitle.getLayoutParams()).weight = state.getWeight();
+    LinearLayout.LayoutParams lp = (LinearLayout.LayoutParams) holder.title.getLayoutParams();
+    lp.weight = state.getWeight();
+    holder.title.setLayoutParams(lp);
 
-    holder.mTitle.setBackgroundColor(color);
-    holder.mTitle.setText(context.getString(state.getTitleResId()).toLowerCase());
-    holder.mBody.setText(message.bodyForNotification(context));
-    holder.mDate.setText(Formatter.formatLocalDateTime(message.createdOn()));
+    holder.title.setBackgroundColor(color);
+    holder.title.setText(context.getString(state.getTitleResId()).toLowerCase());
+    holder.body.setText(message.bodyForNotification(context));
+    holder.date.setText(Formatter.formatLocalDateTime(message.createdOn()));
   }
 
   @Override
@@ -96,9 +98,9 @@ public class MessagesAdapter
   }
 
   static class VH extends RecyclerView.ViewHolder {
-    @BindView(R.id.message_title) TextView mTitle;
-    @BindView(R.id.message_body) TextView mBody;
-    @BindView(R.id.message_date) TextView mDate;
+    @BindView(R.id.message_title) TextView title;
+    @BindView(R.id.message_body) TextView body;
+    @BindView(R.id.message_date) TextView date;
 
     public VH(View root) {
       super(root);

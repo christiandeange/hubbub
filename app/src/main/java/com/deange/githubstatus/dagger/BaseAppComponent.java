@@ -19,6 +19,5 @@ public interface BaseAppComponent {
   void inject(MainApplication target);
   void inject(MainActivity target);
   void inject(FirebaseService target);
-  void inject(DevSettingsDialog target);
   void inject(MessagesAdapter target);
 }
