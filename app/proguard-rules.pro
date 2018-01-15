@@ -16,6 +16,10 @@
 # JSoup
 -keeppackagenames org.jsoup.nodes
 
+# Retrofit
+-dontwarn okio.*
+-dontwarn retrofit2.*
+
 # Project
 -keepattributes SourceFile,LineNumberTable
 -keep class com.deange.githubstatus.model.** { *; }
