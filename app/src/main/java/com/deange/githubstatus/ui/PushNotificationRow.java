@@ -23,6 +23,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 import static com.deange.githubstatus.util.ViewUtils.getDrawable;
+import static com.deange.githubstatus.util.ViewUtils.inflateAndAttach;
 
 
 public class PushNotificationRow
@@ -66,7 +67,7 @@ public class PushNotificationRow
     setOrientation(HORIZONTAL);
     setGravity(Gravity.CENTER_VERTICAL | GravityCompat.START);
 
-    inflate(getContext(), R.layout.list_item_notification_setting, this);
+    inflateAndAttach(this, R.layout.list_item_notification_setting);
     ButterKnife.bind(this);
 
     // Set up the background drawable selector

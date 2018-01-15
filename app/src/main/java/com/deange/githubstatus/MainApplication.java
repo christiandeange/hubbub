@@ -29,12 +29,10 @@ public class MainApplication
     super.onCreate();
 
     appComponent = buildAppComponent();
-    appComponent.inject(this);
+    appComponent.notificationController().register();
 
     FontUtils.init(this);
     JodaTimeAndroid.init(this);
-
-    appComponent.notificationController().register();
   }
 
   BaseAppComponent buildAppComponent() {

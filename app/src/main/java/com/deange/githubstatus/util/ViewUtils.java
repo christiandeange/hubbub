@@ -3,9 +3,12 @@ package com.deange.githubstatus.util;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.AttrRes;
+import android.support.annotation.LayoutRes;
 import android.util.TypedValue;
 import android.view.View;
+import android.view.ViewGroup;
 
+import static android.view.LayoutInflater.from;
 import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
 
@@ -15,8 +18,16 @@ public class ViewUtils {
     throw new AssertionError();
   }
 
-  public static void setVisibility(View view, boolean visible) {
+  public static void setVisible(View view, boolean visible) {
     view.setVisibility(visible ? VISIBLE : GONE);
+  }
+
+  public static View inflate(ViewGroup parent, @LayoutRes int layoutId) {
+    return from(parent.getContext()).inflate(layoutId, parent, false);
+  }
+
+  public static View inflateAndAttach(ViewGroup parent, @LayoutRes int layoutId) {
+    return from(parent.getContext()).inflate(layoutId, parent, true);
   }
 
   public static int getAttrIdValue(@AttrRes int attr, Context context) {

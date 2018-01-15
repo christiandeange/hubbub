@@ -25,7 +25,7 @@ public class MainActivity
 
     component(this).inject(this);
 
-    presenter.takeView(findViewById(android.R.id.content));
+    presenter.takeView((MainView) findViewById(R.id.main_view));
     setSupportActionBar(presenter.toolbar());
     unsubscribeOnDestroy(presenter.onColorUpdated().subscribe(this::updateColor));
   }
