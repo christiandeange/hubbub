@@ -10,8 +10,7 @@
             android:layout_width="32dp"
             android:layout_height="32dp"
             android:layout_gravity="center"
-            android:background="@drawable/circle_black"
-            android:backgroundTint="@android:color/white" />
+            android:background="@drawable/circle_white" />
 
         <View
             android:id="@+id/list_item_setting_dot"

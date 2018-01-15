@@ -1,7 +1,6 @@
 package com.deange.githubstatus.ui;
 
 import android.content.Context;
-import android.content.res.ColorStateList;
 import android.content.res.TypedArray;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -22,6 +21,7 @@ import com.deange.githubstatus.R;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+import static android.graphics.PorterDuff.Mode.SRC_ATOP;
 import static com.deange.githubstatus.util.ViewUtils.getDrawable;
 import static com.deange.githubstatus.util.ViewUtils.inflateAndAttach;
 
@@ -96,7 +96,7 @@ public class PushNotificationRow
   }
 
   public void setColor(int color) {
-    dot.setBackgroundTintList(ColorStateList.valueOf(color));
+    dot.getBackground().setColorFilter(color, SRC_ATOP);
     colorDrawable.setColor(color);
     invalidate();
   }
