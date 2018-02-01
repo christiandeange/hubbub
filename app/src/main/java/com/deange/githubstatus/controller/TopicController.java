@@ -9,11 +9,9 @@ import com.f2prateek.rx.preferences2.RxSharedPreferences;
 import com.google.firebase.messaging.FirebaseMessaging;
 
 import javax.inject.Inject;
-import javax.inject.Singleton;
 
 import io.reactivex.Observable;
 
-@Singleton
 public class TopicController {
 
   private static final String TAG = "TopicController";

@@ -23,21 +23,22 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 import javax.inject.Inject;
-import javax.inject.Singleton;
+
+import io.reactivex.disposables.Disposable;
+import mortar.MortarScope;
+import mortar.Scoped;
 
 import static android.content.Context.NOTIFICATION_SERVICE;
 import static com.deange.githubstatus.net.FirebaseService.ACTION_MESSAGE_RECEIVED;
 
-@Singleton
-public class NotificationController {
+public class NotificationController implements Scoped {
 
   private static final String TAG = "NotificationController";
   private static final int NOTIFICATION_ID = 0x420;
 
-  private final Object lock = new Object();
   private final Context context;
   private final NotificationManager manager;
-  private volatile boolean registered;
+  private Disposable subscription;
 
   @Inject
   public NotificationController(Context context) {
@@ -45,25 +46,20 @@ public class NotificationController {
     manager = (NotificationManager) context.getSystemService(NOTIFICATION_SERVICE);
   }
 
-  public void register() {
-    if (!registered) {
-      synchronized (lock) {
-        if (!registered) {
-          doRegister();
-          registered = true;
-        }
-      }
-    }
-  }
-
-  @SuppressLint("CheckResult")
-  private void doRegister() {
+  @Override
+  public void onEnterScope(MortarScope scope) {
     ensureNotificationChannels();
 
     // Listen for incoming status message updates
-    RxBroadcastReceiver.create(context, new IntentFilter(ACTION_MESSAGE_RECEIVED))
-                       .map(FirebaseService::getMessageFromIntent)
-                       .subscribe(this::showNotification);
+    subscription = RxBroadcastReceiver.create(context, new IntentFilter(ACTION_MESSAGE_RECEIVED))
+                                      .map(FirebaseService::getMessageFromIntent)
+                                      .subscribe(this::showNotification);
+  }
+
+  @Override
+  public void onExitScope() {
+    subscription.dispose();
+    subscription = null;
   }
 
   public void showNotification(Message message) {
@@ -103,8 +99,8 @@ public class NotificationController {
         manager.getNotificationChannels()
                .stream()
                .collect(Collectors.toMap(
-                    NotificationChannel::getId,
-                    channel -> channel));
+                   NotificationChannel::getId,
+                   channel -> channel));
 
     for (State state : State.values()) {
       String id = state.name();
@@ -140,5 +136,4 @@ public class NotificationController {
   private boolean supportsNotificationChannels() {
     return Build.VERSION.SDK_INT >= Build.VERSION_CODES.O;
   }
-
 }

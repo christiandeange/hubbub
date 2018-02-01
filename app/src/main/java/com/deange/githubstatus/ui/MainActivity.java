@@ -1,43 +1,49 @@
 package com.deange.githubstatus.ui;
 
-import android.app.ActivityManager;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
-import android.support.annotation.ColorInt;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 
 import com.deange.githubstatus.R;
+import com.deange.githubstatus.dagger.AppComponent;
 import com.deange.githubstatus.ui.common.BaseActivity;
+import com.deange.githubstatus.ui.main.MainScreen;
+import com.google.android.gms.common.GoogleApiAvailability;
 
-import javax.inject.Inject;
+import flow.path.Path;
 
-import static com.deange.githubstatus.MainApplication.component;
+import static com.deange.githubstatus.ui.scoping.Components.componentInParent;
 
 public class MainActivity
     extends BaseActivity {
 
-  @Inject MainPresenter presenter;
+  @Override
+  protected void onCreate(@Nullable Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
+
+    unsubscribeOnDestroy(
+        componentInParent(this, AppComponent.class)
+            .topicController()
+            .getTopic()
+            .subscribe(this::onTopicChanged));
+  }
+
+  @NonNull
+  @Override
+  public Path defaultPath() {
+    return MainScreen.INSTANCE;
+  }
 
   @Override
-  protected void onCreate(Bundle savedInstanceState) {
-    super.onCreate(savedInstanceState);
-    setContentView(R.layout.activity_main);
-    setTitle(null);
-
-    component(this).inject(this);
-
-    presenter.takeView((MainView) findViewById(R.id.main_view));
-    setSupportActionBar(presenter.toolbar());
-    unsubscribeOnDestroy(presenter.onColorUpdated().subscribe(this::updateColor));
+  public int layoutId() {
+    return R.layout.root;
   }
 
-  void updateColor(@ColorInt int color) {
-    getWindow().setStatusBarColor(color);
-
-    setTaskDescription(new ActivityManager.TaskDescription(
-        getString(R.string.app_name),
-        BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher),
-        color)
-    );
+  private void onTopicChanged(String newTopic) {
+    if (!newTopic.isEmpty()) {
+      // If the user is attempting to subscribe to a push notification channel,
+      // they'll need to have a valid Google Play Services version
+      GoogleApiAvailability.getInstance().makeGooglePlayServicesAvailable(this);
+    }
   }
-
 }

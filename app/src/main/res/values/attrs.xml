@@ -11,4 +11,6 @@
 
     <attr name="fontName" format="string" />
 
+    <item name="screen_switcher_tag" type="id" />
+
 </resources>

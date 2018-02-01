@@ -4,12 +4,17 @@ import android.app.Application;
 import android.content.Context;
 import android.util.Log;
 
-import com.deange.githubstatus.dagger.BaseAppComponent;
+import com.deange.githubstatus.dagger.AppComponent;
+import com.deange.githubstatus.dagger.AppModule;
+import com.deange.githubstatus.dagger.AppScope;
 import com.deange.githubstatus.dagger.DaggerAppComponent;
-import com.deange.githubstatus.dagger.module.AppModule;
 import com.deange.githubstatus.util.FontUtils;
 
 import net.danlew.android.joda.JodaTimeAndroid;
+
+import mortar.MortarScope;
+
+import static com.deange.githubstatus.ui.scoping.MortarContextFactory.createRootScope;
 
 
 public class MainApplication
@@ -17,10 +22,21 @@ public class MainApplication
 
   private static final String TAG = "MainApplication";
 
-  private BaseAppComponent appComponent;
+  private AppComponent appComponent;
+  private MortarScope rootScope;
 
   public static MainApplication get(Context context) {
     return (MainApplication) context.getApplicationContext();
+  }
+
+  public MainApplication() {
+    // Must be done in the constructor since FirebaseService.onCreate()
+    // is instantiated before the application goes through onCreate()
+    appComponent = DaggerAppComponent
+        .builder()
+        .appModule(AppModule.create(this))
+        .build();
+    rootScope = createRootScope(appComponent, AppScope.class.getSimpleName());
   }
 
   @Override
@@ -28,22 +44,17 @@ public class MainApplication
     Log.d(TAG, "onCreate()");
     super.onCreate();
 
-    appComponent = buildAppComponent();
-    appComponent.notificationController().register();
+    rootScope.register(appComponent.notificationController());
 
     FontUtils.init(this);
     JodaTimeAndroid.init(this);
   }
 
-  BaseAppComponent buildAppComponent() {
-    return DaggerAppComponent.builder()
-                             .appModule(AppModule.create(this))
-                             .build();
-  }
-
-  public static <T extends BaseAppComponent> T component(Context context) {
-    //noinspection unchecked
-    return (T) ((MainApplication) context.getApplicationContext()).appComponent;
+  @Override
+  public Object getSystemService(String name) {
+    return rootScope.hasService(name)
+        ? rootScope.getService(name)
+        : super.getSystemService(name);
   }
 
 }

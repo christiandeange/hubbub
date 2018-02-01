@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">Hubbub</string>
     <string name="action_settings">Settings</string>
+    <string name="loading">Loading</string>
 
     <string name="state_good_status">Good</string>
     <string name="state_minor_status">Minor</string>

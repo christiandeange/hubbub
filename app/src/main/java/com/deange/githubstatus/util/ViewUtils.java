@@ -1,6 +1,8 @@
 package com.deange.githubstatus.util;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.ContextWrapper;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.AttrRes;
 import android.support.annotation.LayoutRes;
@@ -28,6 +30,20 @@ public class ViewUtils {
 
   public static View inflateAndAttach(ViewGroup parent, @LayoutRes int layoutId) {
     return from(parent.getContext()).inflate(layoutId, parent, true);
+  }
+
+  public static Activity unwrap(Context context) {
+    while (true) {
+      if (context instanceof Activity) {
+        return (Activity) context;
+      } else if (context instanceof ContextWrapper) {
+        context = ((ContextWrapper) context).getBaseContext();
+      } else {
+        String className = (context == null) ? "null" : context.getClass().getName();
+        throw new IllegalArgumentException(
+            "Provided Context of type " + className + " does not wrap Activity");
+      }
+    }
   }
 
   public static int getAttrIdValue(@AttrRes int attr, Context context) {

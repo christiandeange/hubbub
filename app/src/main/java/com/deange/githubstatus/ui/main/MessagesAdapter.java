@@ -1,4 +1,4 @@
-package com.deange.githubstatus.ui;
+package com.deange.githubstatus.ui.main;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
@@ -56,7 +56,7 @@ public class MessagesAdapter
     return messages.size();
   }
 
-  void setMessages(@NonNull List<Message> messages) {
+  public void setMessages(@NonNull List<Message> messages) {
     List<Message> oldMessages = this.messages;
     this.messages = messages;
 

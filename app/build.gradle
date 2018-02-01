@@ -62,6 +62,10 @@ dependencies {
     implementation "com.google.dagger:dagger:$dagger"
     annotationProcessor "com.google.dagger:dagger-compiler:$dagger"
 
+    implementation 'com.squareup.mortar:mortar:0.20'
+    implementation 'com.squareup.flow:flow:0.12'
+    implementation 'com.squareup.flow:flow-path:0.12'
+
     implementation "com.jakewharton:butterknife:$butterknife"
     annotationProcessor "com.jakewharton:butterknife-compiler:$butterknife"
 

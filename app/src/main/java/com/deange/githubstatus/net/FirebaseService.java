@@ -3,6 +3,7 @@ package com.deange.githubstatus.net;
 import android.content.Intent;
 import android.util.Log;
 
+import com.deange.githubstatus.dagger.AppComponent;
 import com.deange.githubstatus.model.Message;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
@@ -11,9 +12,7 @@ import com.google.gson.JsonObject;
 
 import java.util.Map;
 
-import javax.inject.Inject;
-
-import static com.deange.githubstatus.MainApplication.component;
+import static com.deange.githubstatus.ui.scoping.Components.componentInParent;
 
 public class FirebaseService
     extends FirebaseMessagingService {
@@ -23,16 +22,19 @@ public class FirebaseService
 
   public static final String ACTION_MESSAGE_RECEIVED = "hubbub.intent.action.message_received";
 
-  @Inject Gson gson;
+  private Gson gson;
 
   @Override
   public void onCreate() {
     super.onCreate();
-    component(this).inject(this);
   }
 
   @Override
   public void onMessageReceived(RemoteMessage remoteMessage) {
+    if (gson == null) {
+      gson = componentInParent(this, AppComponent.class).gson();
+    }
+
     JsonObject jsonObject = new JsonObject();
     for (Map.Entry<String, String> entry : remoteMessage.getData().entrySet()) {
       jsonObject.addProperty(entry.getKey(), entry.getValue());

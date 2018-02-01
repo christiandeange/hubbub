@@ -1,6 +1,7 @@
 package com.deange.githubstatus.net;
 
 import com.deange.githubstatus.dagger.MockMode;
+import com.f2prateek.rx.preferences2.Preference;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
@@ -11,10 +12,10 @@ import javax.inject.Provider;
 
 public class ServiceCreator {
 
-  private final Provider<Boolean> mockProvider;
+  private final Preference<Boolean> mockProvider;
 
   @Inject
-  public ServiceCreator(@MockMode final Provider<Boolean> mockProvider) {
+  public ServiceCreator(@MockMode final Preference<Boolean> mockProvider) {
     this.mockProvider = mockProvider;
   }
 
@@ -22,7 +23,7 @@ public class ServiceCreator {
     return clazz.cast(Proxy.newProxyInstance(
         clazz.getClassLoader(),
         new Class[]{clazz},
-        new ServiceHandler<>(mockProvider, realService, mockService)));
+        new ServiceHandler<>(mockProvider::get, realService, mockService)));
   }
 
   private static final class ServiceHandler<T>

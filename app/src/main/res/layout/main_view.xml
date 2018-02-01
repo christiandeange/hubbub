@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.deange.githubstatus.ui.MainView xmlns:android="http://schemas.android.com/apk/res/android"
+<com.deange.githubstatus.ui.main.MainView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main_view"
@@ -65,4 +66,4 @@
 
     </android.support.design.widget.CoordinatorLayout>
 
-</com.deange.githubstatus.ui.MainView>
+</com.deange.githubstatus.ui.main.MainView>

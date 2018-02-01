@@ -1,6 +1,10 @@
-package com.deange.githubstatus.ui;
+package com.deange.githubstatus.ui.main;
 
+import android.app.Activity;
+import android.app.ActivityManager;
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.support.annotation.ColorInt;
 import android.support.annotation.Nullable;
 import android.support.design.widget.AppBarLayout;
@@ -28,9 +32,10 @@ import butterknife.OnClick;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 
-import static com.deange.githubstatus.MainApplication.component;
+import static com.deange.githubstatus.ui.scoping.Components.component;
 import static com.deange.githubstatus.util.FontUtils.BOLD;
 import static com.deange.githubstatus.util.ViewUtils.setVisible;
+import static com.deange.githubstatus.util.ViewUtils.unwrap;
 
 public class MainView extends LinearLayout {
 
@@ -47,12 +52,16 @@ public class MainView extends LinearLayout {
 
   private CompositeDisposable disposables;
   private MessagesAdapter adapter;
+  private Bitmap taskIcon;
+  private boolean hasLoadedAtLeastOnce;
 
   public MainView(
       Context context,
       @Nullable AttributeSet attrs) {
     super(context, attrs);
-    component(context).inject(this);
+    component(context, MainScreen.Component.class).inject(this);
+
+    taskIcon = BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher);
   }
 
   @Override
@@ -67,7 +76,7 @@ public class MainView extends LinearLayout {
     swipeLayout.setOnRefreshListener(presenter::refreshStatus);
 
     adapter = new MessagesAdapter();
-    recyclerView.addItemDecoration(new SpaceDecoration(context, SpaceDecoration.VERTICAL));
+    recyclerView.addItemDecoration(new SpaceDecoration(context));
     recyclerView.setLayoutManager(new LinearLayoutManager(context));
     recyclerView.setAdapter(adapter);
 
@@ -75,23 +84,11 @@ public class MainView extends LinearLayout {
 
     disposables = new CompositeDisposable();
     disposables.add(
-        presenter.onColorUpdated()
-                 .observeOn(AndroidSchedulers.mainThread())
-                 .subscribe(this::updateColor));
-
-    disposables.add(
         presenter.screenData()
                  .observeOn(AndroidSchedulers.mainThread())
                  .subscribe(this::updateView));
 
-    disposables.add(
-        presenter.refreshing()
-                 .distinctUntilChanged()
-                 .observeOn(AndroidSchedulers.mainThread())
-                 .subscribe(this::setRefreshing));
-
     presenter.takeView(this);
-    presenter.refreshStatus();
   }
 
   @Override
@@ -112,12 +109,21 @@ public class MainView extends LinearLayout {
   }
 
   private void updateView(MainPresenter.ScreenData screenData) {
+    setRefreshing(screenData.refreshing);
+    if (screenData.refreshing && hasLoadedAtLeastOnce) {
+      // If this is not our first time binding, then keep the existing data on screen
+      return;
+    }
+
+    hasLoadedAtLeastOnce = true;
     toolbarLayout.setTitle(screenData.title);
     adapter.setMessages(screenData.messages);
 
-    boolean hasMessages = !screenData.messages.isEmpty();
+    boolean hasMessages = !screenData.messages.isEmpty() || screenData.refreshing;
     setVisible(recyclerView, hasMessages);
     setVisible(emptyView, !hasMessages);
+
+    updateColor(screenData.color);
   }
 
   public void setRefreshing(boolean refreshing) {
@@ -128,5 +134,10 @@ public class MainView extends LinearLayout {
     toolbarLayout.setBackgroundColor(color);
     toolbarLayout.setContentScrimColor(color);
     toolbarLayout.setStatusBarScrimColor(color);
+
+    Activity activity = unwrap(getContext());
+    activity.getWindow().setStatusBarColor(color);
+    activity.setTaskDescription(new ActivityManager.TaskDescription(
+        getResources().getString(R.string.app_name), taskIcon, color));
   }
 }

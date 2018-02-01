@@ -4,13 +4,11 @@ import com.deange.githubstatus.model.Response;
 import com.deange.githubstatus.net.GithubStatusApi;
 
 import javax.inject.Inject;
-import javax.inject.Singleton;
 
 import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 
-@Singleton
 public class GithubController {
 
   private final GithubStatusApi api;

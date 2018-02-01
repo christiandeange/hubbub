@@ -15,6 +15,8 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import static com.deange.githubstatus.util.ViewGroupIterable.childrenOf;
+
 public class PushNotificationDialog {
 
   private final Preference<String> topicPreference;
@@ -37,7 +39,7 @@ public class PushNotificationDialog {
     toggles.clear();
 
     ViewGroup root = dialog.findViewById(R.id.push_notification_toggles_parent);
-    for (View view : ViewGroupIterable.childrenOf(root)) {
+    for (View view : childrenOf(root)) {
       if (view instanceof PushNotificationRow) {
         PushNotificationRow row = (PushNotificationRow) view;
 
